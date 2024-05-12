@@ -16,7 +16,7 @@ public class Member {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", unique = true, nullable = false)
     private String email;
 
     @Column(name = "PASSWORD", nullable = false)
@@ -27,6 +27,13 @@ public class Member {
 
     @Column(name = "CREATION_DATE", nullable = false)
     private ZonedDateTime creationDate;
+
+    public Member() {
+    }
+
+    public Member(String id) {
+        this.id = id;
+    }
 
     @PrePersist
     private void prePersist() {

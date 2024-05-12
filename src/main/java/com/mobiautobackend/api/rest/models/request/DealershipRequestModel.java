@@ -15,11 +15,19 @@ public class DealershipRequestModel {
     @JsonProperty("cnpj")
     private String cnpj;
 
+    @NotBlank
+    @JsonProperty("memberId")
+    private String memberId;
+
     public String getTradeName() {
         return tradeName;
     }
 
     public String getCnpj() {
         return cnpj;
+    }
+
+    public String getMemberId() {
+        return memberId;
     }
 }
