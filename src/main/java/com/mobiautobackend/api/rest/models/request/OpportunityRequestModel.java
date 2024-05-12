@@ -1,6 +1,7 @@
 package com.mobiautobackend.api.rest.models.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ public class OpportunityRequestModel {
     private String vehicleId;
 
     @NotNull
+    @Valid
     @JsonProperty("customer")
     private Customer customer;
 
@@ -50,7 +52,7 @@ public class OpportunityRequestModel {
         private String name;
 
         @NotBlank
-        @Email
+        @Email //TODO não está validando o e-mail
         @JsonProperty("email")
         private String email;
 

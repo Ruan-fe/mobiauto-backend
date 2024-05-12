@@ -36,17 +36,16 @@ public class DealershipController {
 
     @PostMapping(DEALERSHIP_RESOURCE_PATH)
     public ResponseEntity<?> create(@RequestBody @Valid DealershipRequestModel dealershipRequestModel) {
-        Dealership dealership = dealershipAssembler.toEntity(dealershipRequestModel);
-
         memberService.findById(dealershipRequestModel.getMemberId())
                 .orElseThrow(() -> new BadRequestException(ExceptionMessagesEnum.MEMBER_NOT_FOUND));
 
-        dealershipService.findByCnpjOrMemberId(dealership.getCnpj(), dealershipRequestModel.getMemberId())
+        dealershipService.findByCnpjOrMemberId(dealershipRequestModel.getCnpj(), dealershipRequestModel.getMemberId())
                 .ifPresent(searchedDealership -> {
                     throw new ConflictException(ExceptionMessagesEnum.DEALERSHIP_ALREADY_EXISTS,
                             dealershipAssembler.buildDealershipSelfLink(searchedDealership.getId()).toUri());
                 });
 
+        Dealership dealership = dealershipAssembler.toEntity(dealershipRequestModel);
         dealership = dealershipService.create(dealership);
 
         return ResponseEntity.created(dealershipAssembler.buildDealershipSelfLink(dealership.getId()).toUri()).build();

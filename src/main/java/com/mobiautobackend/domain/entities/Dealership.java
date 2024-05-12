@@ -20,7 +20,7 @@ public class Dealership {
     @Column(name = "CNPJ", unique = true, nullable = false)
     private String cnpj;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Member> members;
 
     @Column(name = "CREATION_DATE", nullable = false)
