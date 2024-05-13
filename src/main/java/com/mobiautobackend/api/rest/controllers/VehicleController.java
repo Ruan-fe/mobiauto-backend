@@ -13,11 +13,13 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
+
 @RestController
 public class VehicleController {
 
-    private static final String VEHICLE_RESOURCE_PATH = "/api/vehicles";
-    private static final String VEHICLE_SELF_PATH = VEHICLE_RESOURCE_PATH + "/{vehicleId}";
+    private static final String VEHICLE_RESOURCE_PATH = DEALERSHIP_SELF_PATH + "/vehicles";
+    public static final String VEHICLE_SELF_PATH = VEHICLE_RESOURCE_PATH + "/{vehicleId}";
 
     private final VehicleService vehicleService;
     private final VehicleAssembler vehicleAssembler;
@@ -32,20 +34,22 @@ public class VehicleController {
     }
 
     @PostMapping(VEHICLE_RESOURCE_PATH)
-    public ResponseEntity<?> create(@RequestBody @Valid VehicleRequestModel vehicleRequestModel) {
-        dealershipService.findById(vehicleRequestModel.getDealershipId())
+    public ResponseEntity<?> create(@PathVariable("dealershipId") final String dealershipId,
+                                    @RequestBody @Valid VehicleRequestModel vehicleRequestModel) {
+        dealershipService.findById(dealershipId)
                 .orElseThrow(() -> new BadRequestException(ExceptionMessagesEnum.DEALERSHIP_NOT_FOUND));
 
-        Vehicle vehicle = vehicleAssembler.toEntity(vehicleRequestModel);
+        Vehicle vehicle = vehicleAssembler.toEntity(vehicleRequestModel, dealershipId);
         vehicle = vehicleService.create(vehicle);
 
-        return ResponseEntity.created(vehicleAssembler.buildVehicleSelfLink(vehicle.getId()).toUri()).build();
+        return ResponseEntity.created(vehicleAssembler.buildVehicleSelfLink(vehicle.getId(), vehicle.getDealershipId()).toUri()).build();
     }
 
     @GetMapping(VEHICLE_SELF_PATH)
-    public ResponseEntity<VehicleResponseModel> findById(@PathVariable("vehicleId") final String vehicleId) {
-        Vehicle vehicle = vehicleService.findById(vehicleId).orElseThrow(() ->
-                new NotFoundException(ExceptionMessagesEnum.VEHICLE_NOT_FOUND));
+    public ResponseEntity<VehicleResponseModel> findById(@PathVariable("vehicleId") final String vehicleId,
+                                                         @PathVariable("dealershipId") final String dealershipId) {
+        Vehicle vehicle = vehicleService.findByIdAndDealershipId(vehicleId, dealershipId)
+                .orElseThrow(() -> new NotFoundException(ExceptionMessagesEnum.VEHICLE_NOT_FOUND));
         return ResponseEntity.ok().body(vehicleAssembler.toModel(vehicle));
     }
 }

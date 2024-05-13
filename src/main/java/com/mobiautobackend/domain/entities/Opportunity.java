@@ -14,8 +14,8 @@ public class Opportunity {
     @Column(name = "ID", unique = true, nullable = false)
     private String id;
 
-    @Column(name = "CUSTOMER_ID", nullable = false)
-    private String customerId;
+    @OneToOne
+    private Customer customer;
 
     @Column(name = "DEALERSHIP_ID", nullable = false)
     private String dealershipId;
@@ -36,7 +36,7 @@ public class Opportunity {
     @Column(name = "CREATION_DATE", nullable = false)
     private ZonedDateTime creationDate;
 
-    //data de assign, conclusion date
+    //TODO data de assign, conclusion date
 
     @PrePersist
     private void prePersist() {
@@ -52,12 +52,12 @@ public class Opportunity {
         return id;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public String getDealershipId() {

@@ -10,10 +10,6 @@ import jakarta.validation.constraints.NotNull;
 public class VehicleRequestModel {
 
     @NotNull
-    @JsonProperty("dealershipId")
-    private String dealershipId;
-
-    @NotNull
     @JsonProperty("licensePlate")
     private String licensePlate;
 
@@ -52,10 +48,6 @@ public class VehicleRequestModel {
     @NotNull
     @JsonProperty("color")
     private VehicleColor color;
-
-    public String getDealershipId() {
-        return dealershipId;
-    }
 
     public String getLicensePlate() {
         return licensePlate;

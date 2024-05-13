@@ -7,10 +7,12 @@ public enum ExceptionMessagesEnum {
     MEMBER_NOT_FOUND(404001, "Member not found for Id informed", HttpStatus.NOT_FOUND),
     DEALERSHIP_NOT_FOUND(404002, "Dealership not found for Id informed", HttpStatus.NOT_FOUND),
     VEHICLE_NOT_FOUND(404003, "Vehicle not found for Id informed", HttpStatus.NOT_FOUND),
+    OPPORTUNITY_NOT_FOUND(404003, "Opportunity not found for Id informed", HttpStatus.NOT_FOUND),
 
     //409
     MEMBER_ALREADY_EXISTS(409001, "Member with these parameters already exists", HttpStatus.CONFLICT),
-    DEALERSHIP_ALREADY_EXISTS(409002, "Dealership with these parameters already exists", HttpStatus.CONFLICT);
+    DEALERSHIP_ALREADY_EXISTS(409002, "Dealership with these parameters already exists", HttpStatus.CONFLICT),
+    OPPORTUNITY_ALREADY_EXISTS(409003, "Opportunity with these parameters already exists", HttpStatus.CONFLICT);
 
     private final Integer code;
     private final String message;

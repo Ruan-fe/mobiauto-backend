@@ -8,34 +8,10 @@ import jakarta.validation.constraints.NotNull;
 
 public class OpportunityRequestModel {
 
-    @NotBlank
-    @JsonProperty("dealershipId")
-    private String dealershipId;
-
-    @NotBlank
-    @JsonProperty("vehicleId")
-    private String vehicleId;
-
     @NotNull
     @Valid
     @JsonProperty("customer")
     private Customer customer;
-
-    public String getDealershipId() {
-        return dealershipId;
-    }
-
-    public void setDealershipId(String dealershipId) {
-        this.dealershipId = dealershipId;
-    }
-
-    public String getVehicleId() {
-        return vehicleId;
-    }
-
-    public void setVehicleId(String vehicleId) {
-        this.vehicleId = vehicleId;
-    }
 
     public Customer getCustomer() {
         return customer;
@@ -45,14 +21,14 @@ public class OpportunityRequestModel {
         this.customer = customer;
     }
 
-    private static class Customer {
+    public static class Customer {
 
         @NotBlank
         @JsonProperty("name")
         private String name;
 
         @NotBlank
-        @Email //TODO não está validando o e-mail
+        @Email
         @JsonProperty("email")
         private String email;
 

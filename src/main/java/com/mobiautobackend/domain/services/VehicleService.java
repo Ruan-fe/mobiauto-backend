@@ -24,4 +24,8 @@ public class VehicleService {
     public Optional<Vehicle> findById(String vehicleId) {
         return vehicleRepository.findById(vehicleId);
     }
+
+    public Optional<Vehicle> findByIdAndDealershipId(String vehicleId, String dealershipId) {
+        return vehicleRepository.findByIdAndDealershipId(vehicleId, dealershipId);
+    }
 }

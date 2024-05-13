@@ -1,5 +1,6 @@
 package com.mobiautobackend.api.rest.models.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -10,6 +11,8 @@ import com.mobiautobackend.domain.enumeration.VehicleFuelType;
 import com.mobiautobackend.domain.enumeration.VehicleTransmissionType;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
+
+import java.time.ZonedDateTime;
 
 @JsonPropertyOrder({
         "id",
@@ -23,7 +26,8 @@ import org.springframework.hateoas.server.core.Relation;
         "transmissionType",
         "fuelType",
         "doors",
-        "color"
+        "color",
+        "creationDate"
 })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Relation(value = "vehicle", collectionRelation = "vehicles")
@@ -65,6 +69,10 @@ public class VehicleResponseModel extends RepresentationModel<VehicleResponseMod
     @JsonProperty("color")
     private VehicleColor color;
 
+    @JsonProperty("creationDate")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private ZonedDateTime creationDate;
+
     public VehicleResponseModel() {
     }
 
@@ -81,5 +89,6 @@ public class VehicleResponseModel extends RepresentationModel<VehicleResponseMod
         this.fuelType = vehicle.getFuelType();
         this.doors = vehicle.getDoors();
         this.color = vehicle.getColor();
+        this.creationDate = vehicle.getCreationDate();
     }
 }

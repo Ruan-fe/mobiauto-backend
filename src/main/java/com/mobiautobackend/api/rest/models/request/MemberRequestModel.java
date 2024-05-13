@@ -1,6 +1,7 @@
 package com.mobiautobackend.api.rest.models.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class MemberRequestModel {
@@ -10,6 +11,7 @@ public class MemberRequestModel {
     private String name;
 
     @NotBlank
+    @Email
     @JsonProperty("email")
     private String email;
 
