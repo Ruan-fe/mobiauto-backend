@@ -1,9 +1,9 @@
 INSERT INTO MEMBER (ID, NAME, EMAIL, PASSWORD, ROLE, CREATION_DATE)
-VALUES ('a5993416-4255-11ec-71d3-0242ac130004', 'Ruan Amaral', 'ruan@gmail.com', '123456', 'DEFAULT',
+VALUES ('a5993416-4255-11ec-71d3-0242ac130004', 'Ruan Amaral', 'ruan@gmail.com', '123456', 'OWNER',
         '2024-04-23T23:01:40.619-03:00');
 
 INSERT INTO MEMBER (ID, NAME, EMAIL, PASSWORD, ROLE, CREATION_DATE)
-VALUES ('91f746ff-01d7-402f-a53c-2bfc627b6cdd', 'Duke Morimoto', 'dukemorimoto@gmail.com', '45786215', 'DEFAULT',
+VALUES ('91f746ff-01d7-402f-a53c-2bfc627b6cdd', 'Duke Morimoto', 'dukemorimoto@gmail.com', '45786215', 'USER',
         '2024-04-23T23:01:40.619-03:00');
 
 INSERT INTO DEALERSHIP (ID, TRADE_NAME, CNPJ, CREATION_DATE)

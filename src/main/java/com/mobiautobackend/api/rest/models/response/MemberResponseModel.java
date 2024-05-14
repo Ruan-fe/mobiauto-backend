@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.mobiautobackend.domain.entities.Member;
+import com.mobiautobackend.domain.enumeration.MemberRole;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -31,7 +32,7 @@ public class MemberResponseModel extends RepresentationModel<MemberResponseModel
     private String email;
 
     @JsonProperty("role")
-    private String role;
+    private MemberRole role;
 
     @JsonProperty("creationDate")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")

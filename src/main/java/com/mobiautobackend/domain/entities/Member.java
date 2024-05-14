@@ -1,13 +1,20 @@
 package com.mobiautobackend.domain.entities;
 
+import com.mobiautobackend.domain.enumeration.MemberRole;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "MEMBER")
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     @Column(name = "ID", unique = true, nullable = false)
@@ -23,7 +30,8 @@ public class Member {
     private String password;
 
     @Column(name = "ROLE", nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
 
     @Column(name = "CREATION_DATE", nullable = false)
     private ZonedDateTime creationDate;
@@ -65,19 +73,59 @@ public class Member {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (Objects.equals(this.role, MemberRole.ADMIN)) {
+            return List.of(new SimpleGrantedAuthority(MemberRole.ADMIN.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+        } else if (Objects.equals(this.role, MemberRole.MANAGER)) {
+            return List.of(new SimpleGrantedAuthority(MemberRole.MANAGER.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+        } else if (Objects.equals(this.role, MemberRole.ASSISTANT)) {
+            return List.of(new SimpleGrantedAuthority(MemberRole.ASSISTANT.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+        } else if (Objects.equals(this.role, MemberRole.OWNER)) {
+            return List.of(new SimpleGrantedAuthority(MemberRole.OWNER.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+        } else {
+            return List.of(new SimpleGrantedAuthority(MemberRole.USER.name()));
+        }
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getRole() {
+    public MemberRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(MemberRole role) {
         this.role = role;
     }
 

@@ -30,7 +30,7 @@ public class MemberControllerTest extends ApplicationTests<MemberControllerTest>
                 .andExpect(jsonPath("$.id").value("a5993416-4255-11ec-71d3-0242ac130004"))
                 .andExpect(jsonPath("$.name").value("Ruan Amaral"))
                 .andExpect(jsonPath("$.email").value("ruan@gmail.com"))
-                .andExpect(jsonPath("$.role").value("DEFAULT"))
+                .andExpect(jsonPath("$.role").value("OWNER"))
                 .andExpect(jsonPath("$.password").doesNotExist())
                 .andExpect(jsonPath("$.creationDate").value("2024-04-23T23:01:40.619-03:00"))
                 .andExpect(jsonPath("$._links['self'].href").value(containsString(uri)));
@@ -69,7 +69,7 @@ public class MemberControllerTest extends ApplicationTests<MemberControllerTest>
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value("Carlos Theodoro"))
                 .andExpect(jsonPath("$.email").value("carlostheodoro@gmail.com"))
-                .andExpect(jsonPath("$.role").value("DEFAULT"))
+                .andExpect(jsonPath("$.role").value("USER"))
                 .andExpect(jsonPath("$.password").doesNotExist())
                 .andExpect(jsonPath("$.creationDate").exists())
                 .andExpect(jsonPath("$._links['self'].href").value(containsString(uri)));

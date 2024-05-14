@@ -52,4 +52,6 @@ public class VehicleController {
                 .orElseThrow(() -> new NotFoundException(ExceptionMessagesEnum.VEHICLE_NOT_FOUND));
         return ResponseEntity.ok().body(vehicleAssembler.toModel(vehicle));
     }
+
+    //TODO get all vehicle
 }

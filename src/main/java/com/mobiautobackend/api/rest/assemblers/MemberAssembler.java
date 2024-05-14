@@ -2,10 +2,13 @@ package com.mobiautobackend.api.rest.assemblers;
 
 import com.mobiautobackend.api.rest.controllers.MemberController;
 import com.mobiautobackend.api.rest.models.request.MemberRequestModel;
+import com.mobiautobackend.api.rest.models.response.MemberAuthResponseModel;
 import com.mobiautobackend.api.rest.models.response.MemberResponseModel;
 import com.mobiautobackend.domain.entities.Member;
+import com.mobiautobackend.domain.enumeration.MemberRole;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -25,12 +28,16 @@ public class MemberAssembler extends RepresentationModelAssemblerSupport<Member,
         return memberResponseModel;
     }
 
+    public MemberAuthResponseModel toModel(String token) {
+        return new MemberAuthResponseModel(token);
+    }
+
     public Member toEntity(MemberRequestModel memberRequestModel) {
         Member member = new Member();
         member.setName(memberRequestModel.getName());
         member.setEmail(memberRequestModel.getEmail());
-        member.setPassword(memberRequestModel.getPassword()); //TODO password encoder
-        member.setRole("DEFAULT"); //TODO Ajustar roles
+        member.setPassword(new BCryptPasswordEncoder().encode(memberRequestModel.getPassword()));
+        member.setRole(MemberRole.USER);
         return member;
     }
 
