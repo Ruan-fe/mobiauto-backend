@@ -27,7 +27,7 @@ public class VehicleAssembler extends RepresentationModelAssemblerSupport<Vehicl
         vehicle.setModel(vehicleRequestModel.getModel());
         vehicle.setManufacturingYear(vehicleRequestModel.getManufacturingYear());
         vehicle.setModelYear(vehicleRequestModel.getModelYear());
-        vehicle.setDescription(vehicleRequestModel.getDescription());
+        vehicle.setVersion(vehicleRequestModel.getVersion());
         vehicle.setTransmissionType(vehicleRequestModel.getTransmissionType());
         vehicle.setFuelType(vehicleRequestModel.getFuelType());
         vehicle.setDoors(vehicleRequestModel.getDoors());

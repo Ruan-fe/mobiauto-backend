@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class DealershipController {
 
-    private static final String DEALERSHIP_RESOURCE_PATH = "/api/dealerships";
+    public static final String DEALERSHIP_RESOURCE_PATH = "/api/dealerships";
     public static final String DEALERSHIP_SELF_PATH = DEALERSHIP_RESOURCE_PATH + "/{dealershipId}";
 
     private final DealershipService dealershipService;

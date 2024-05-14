@@ -22,7 +22,7 @@ import java.time.ZonedDateTime;
         "model",
         "manufacturingYear",
         "modelYear",
-        "description",
+        "version",
         "transmissionType",
         "fuelType",
         "doors",
@@ -54,8 +54,8 @@ public class VehicleResponseModel extends RepresentationModel<VehicleResponseMod
     @JsonProperty("modelYear")
     private int modelYear;
 
-    @JsonProperty("description")
-    private String description;
+    @JsonProperty("version")
+    private String version;
 
     @JsonProperty("transmissionType")
     private VehicleTransmissionType transmissionType;
@@ -84,7 +84,7 @@ public class VehicleResponseModel extends RepresentationModel<VehicleResponseMod
         this.model = vehicle.getModel();
         this.manufacturingYear = vehicle.getManufacturingYear();
         this.modelYear = vehicle.getModelYear();
-        this.description = vehicle.getDescription();
+        this.version = vehicle.getVersion();
         this.transmissionType = vehicle.getTransmissionType();
         this.fuelType = vehicle.getFuelType();
         this.doors = vehicle.getDoors();

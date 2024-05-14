@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class MemberController {
 
-    private static final String MEMBER_RESOURCE_PATH = "/api/members";
-    private static final String MEMBER_SELF_PATH = MEMBER_RESOURCE_PATH + "/{memberId}";
+    public static final String MEMBER_RESOURCE_PATH = "/api/members";
+    public static final String MEMBER_SELF_PATH = MEMBER_RESOURCE_PATH + "/{memberId}";
 
     private final MemberService memberService;
     private final MemberAssembler memberAssembler;

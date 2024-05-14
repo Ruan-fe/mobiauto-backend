@@ -21,6 +21,9 @@ public class Dealership {
     private String cnpj;
 
     @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "DEALERSHIP_MEMBER",
+            joinColumns = @JoinColumn(name = "DEALERSHIP_ID"),
+            inverseJoinColumns = @JoinColumn(name = "MEMBER_ID"))
     private List<Member> members;
 
     @Column(name = "CREATION_DATE", nullable = false)

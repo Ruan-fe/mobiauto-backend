@@ -1,0 +1,54 @@
+shouldReturnCreatedWhenPostVehicle:
+  body: >-
+    {
+      "licensePlate":"ARE-1245",
+      "brandType":"VOLKSWAGEN",
+      "model":"Gol",
+      "manufacturingYear":"2016",
+      "modelYear":"2017",
+      "version":"1.6 MSI Highline",
+      "transmissionType":"MANUAL",
+      "fuelType":"GASOLINE",
+      "doors":"4",
+      "color":"WHITE"
+    }
+shouldReturnBadRequestWhenPostVehicleWithNullBrandType:
+  body: >-
+    {
+      "licensePlate":"ARE-1245",
+      "model":"Gol",
+      "manufacturingYear":"2016",
+      "modelYear":"2017",
+      "version":"1.6 MSI Highline",
+      "transmissionType":"MANUAL",
+      "fuelType":"GASOLINE",
+      "doors":"4",
+      "color":"WHITE"
+    }
+shouldReturnBadRequestWhenPostVehicleWithNullFuelType:
+  body: >-
+    {
+      "licensePlate":"ARE-1245",
+      "brandType":"VOLKSWAGEN",
+      "model":"Gol",
+      "manufacturingYear":"2016",
+      "modelYear":"2017",
+      "version":"1.6 MSI Highline",
+      "transmissionType":"MANUAL",
+      "doors":"4",
+      "color":"WHITE"
+    }
+shouldReturnBadRequestWhenPostVehicleWithInvalidFuelType:
+  body: >-
+    {
+      "licensePlate":"ARE-1245",
+      "brandType":"VOLKSWAGEN",
+      "model":"Gol",
+      "manufacturingYear":"2016",
+      "modelYear":"2017",
+      "version":"1.6 MSI Highline",
+      "transmissionType":"MANUAL",
+      "fuelType":"PETROLEO",
+      "doors":"4",
+      "color":"WHITE"
+    }

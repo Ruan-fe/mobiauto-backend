@@ -18,7 +18,7 @@ import static com.mobiautobackend.api.rest.controllers.DealershipController.DEAL
 @RestController
 public class VehicleController {
 
-    private static final String VEHICLE_RESOURCE_PATH = DEALERSHIP_SELF_PATH + "/vehicles";
+    public static final String VEHICLE_RESOURCE_PATH = DEALERSHIP_SELF_PATH + "/vehicles";
     public static final String VEHICLE_SELF_PATH = VEHICLE_RESOURCE_PATH + "/{vehicleId}";
 
     private final VehicleService vehicleService;

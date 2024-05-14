@@ -24,6 +24,7 @@ public class Vehicle {
     private String licensePlate;
 
     @Column(name = "BRAND_TYPE", nullable = false)
+    @Enumerated(EnumType.STRING)
     private VehicleBrandType brandType;
 
     @Column(name = "MODEL", nullable = false)
@@ -35,8 +36,8 @@ public class Vehicle {
     @Column(name = "MODEL_YEAR", nullable = false)
     private int modelYear;
 
-    @Column(name = "DESCRIPTION", nullable = false)
-    private String description;
+    @Column(name = "VERSION", nullable = false)
+    private String version;
 
     @Column(name = "TRANSMISSION_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -118,12 +119,12 @@ public class Vehicle {
         this.modelYear = modelYear;
     }
 
-    public String getDescription() {
-        return description;
+    public String getVersion() {
+        return version;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public VehicleTransmissionType getTransmissionType() {

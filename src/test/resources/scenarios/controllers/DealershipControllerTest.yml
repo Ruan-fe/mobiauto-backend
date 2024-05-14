@@ -1,0 +1,39 @@
+shouldReturnCreatedWhenPostDealership:
+  body: >-
+    {
+      "tradeName":"Arigato Veiculos",
+      "cnpj":"20994146000107",
+      "memberId":"91f746ff-01d7-402f-a53c-2bfc627b6cdd"
+    }
+shouldReturnBadRequestWhenPostDealershipAndNotExistsMemberId:
+  body: >-
+    {
+      "tradeName":"Arigato Veiculos",
+      "cnpj":"20994146000107",
+      "memberId":"NOT_EXISTS"
+    }
+shouldReturnBadRequestWhenPostDealershipWithNullTradeName:
+  body: >-
+    {
+      "cnpj":"20994146000107",
+      "memberId":"91f746ff-01d7-402f-a53c-2bfc627b6cdd"
+    }
+shouldReturnBadRequestWhenPostDealershipWithNullCnpj:
+  body: >-
+    {
+      "tradeName":"Arigato Veiculos",
+      "memberId":"91f746ff-01d7-402f-a53c-2bfc627b6cdd"
+    }
+shouldReturnCreatedWhenPostDealershipWithInvalidCnpj:
+  body: >-
+    {
+      "tradeName":"Arigato Veiculos",
+      "cnpj":"20994146",
+      "memberId":"91f746ff-01d7-402f-a53c-2bfc627b6cdd"
+    }
+shouldReturnBadRequestWhenPostDealershipWithNullMemberId:
+  body: >-
+    {
+      "tradeName":"Arigato Veiculos",
+      "cnpj":"20994146000107"
+    }

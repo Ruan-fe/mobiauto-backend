@@ -30,8 +30,8 @@ public class VehicleRequestModel {
     private int modelYear;
 
     @NotNull
-    @JsonProperty("description")
-    private String description;
+    @JsonProperty("version")
+    private String version;
 
     @NotNull
     @JsonProperty("transmissionType")
@@ -69,8 +69,8 @@ public class VehicleRequestModel {
         return modelYear;
     }
 
-    public String getDescription() {
-        return description;
+    public String getVersion() {
+        return version;
     }
 
     public VehicleTransmissionType getTransmissionType() {

@@ -1,0 +1,32 @@
+shouldReturnCreatedWhenPostMember:
+  body: >-
+    {
+      "name":"Carlos Theodoro",
+      "email":"carlostheodoro@gmail.com",
+      "password":"123456"
+    }
+shouldReturnBadRequestWhenPostMemberWithNullName:
+  body: >-
+    {
+      "email":"carlostheodoro@gmail.com",
+      "password":"123456"
+    }
+shouldReturnBadRequestWhenPostMemberWithNullEmail:
+  body: >-
+    {
+      "name":"Carlos Theodoro",
+      "password":"123456"
+    }
+shouldReturnBadRequestWhenPostMemberWithInvalidEmail:
+  body: >-
+    {
+      "name":"Carlos Theodoro",
+      "email":"carlostheodoro",
+      "password":"123456"
+    }
+shouldReturnBadRequestWhenPostMemberWithNullPassword:
+  body: >-
+    {
+      "name":"Carlos Theodoro",
+      "email":"carlostheodoro@gmail.com"
+    }

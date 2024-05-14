@@ -13,30 +13,39 @@ import com.mobiautobackend.domain.services.OpportunityService;
 import com.mobiautobackend.domain.services.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
 import static com.mobiautobackend.api.rest.controllers.VehicleController.VEHICLE_SELF_PATH;
 
 @RestController
 public class OpportunityController {
 
-    private static final String OPPORTUNITY_RESOURCE_PATH = VEHICLE_SELF_PATH + "/opportunities";
-    private static final String OPPORTUNITY_SELF_PATH = OPPORTUNITY_RESOURCE_PATH + "/{opportunityId}";
+    public static final String OPPORTUNITY_RESOURCE_PATH = VEHICLE_SELF_PATH + "/opportunities";
+    public static final String OPPORTUNITY_SELF_PATH = OPPORTUNITY_RESOURCE_PATH + "/{opportunityId}";
+    public static final String OPPORTUNITY_PATH = DEALERSHIP_SELF_PATH + "/opportunities";
 
     private final OpportunityService opportunityService;
     private final OpportunityAssembler opportunityAssembler;
     private final VehicleService vehicleService;
+    private final PagedResourcesAssembler<Opportunity> pagedResponseAssembler;
 
     @Autowired
     public OpportunityController(OpportunityService opportunityService,
                                  OpportunityAssembler opportunityAssembler,
-                                 VehicleService vehicleService) {
+                                 VehicleService vehicleService,
+                                 PagedResourcesAssembler<Opportunity> pagedResponseAssembler) {
         this.opportunityService = opportunityService;
         this.opportunityAssembler = opportunityAssembler;
         this.vehicleService = vehicleService;
+        this.pagedResponseAssembler = pagedResponseAssembler;
     }
 
     @PostMapping(OPPORTUNITY_RESOURCE_PATH)
@@ -66,5 +75,22 @@ public class OpportunityController {
         Opportunity opportunity = opportunityService.findByIdAndDealershipIdAndVehicleId(opportunityId, dealershipId, vehicleId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessagesEnum.OPPORTUNITY_NOT_FOUND));
         return ResponseEntity.ok().body(opportunityAssembler.toModel(opportunity));
+    }
+
+    @GetMapping(OPPORTUNITY_RESOURCE_PATH + "{matrixParam}")
+    public ResponseEntity<PagedModel<OpportunityResponseModel>> findAllByFilters(@PathVariable("dealershipId") final String dealershipId,
+                                                                                 @PathVariable(value = "vehicleId") final String vehicleId,
+                                                                                 @MatrixVariable(value = "statuses", required = false) final List<OpportunityStatus> statuses,
+                                                                                 Pageable pageable) {
+        Page<Opportunity> opportunities = opportunityService.findAllByFilters(dealershipId, vehicleId, statuses, pageable);
+        return ResponseEntity.ok().body(pagedResponseAssembler.toModel(opportunities, opportunityAssembler));
+    }
+
+    @GetMapping(OPPORTUNITY_PATH + "{matrixParam}")
+    public ResponseEntity<PagedModel<OpportunityResponseModel>> findAllByDealershipIdAndFilters(@PathVariable("dealershipId") final String dealershipId,
+                                                                                                @MatrixVariable(value = "statuses", required = false) final List<OpportunityStatus> statuses,
+                                                                                                Pageable pageable) {
+        Page<Opportunity> opportunities = opportunityService.findAllByFilters(dealershipId, statuses, pageable);
+        return ResponseEntity.ok().body(pagedResponseAssembler.toModel(opportunities, opportunityAssembler));
     }
 }
