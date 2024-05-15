@@ -27,15 +27,10 @@ public class VehicleService {
         return vehicleRepository.findById(vehicleId);
     }
 
-    public Optional<Vehicle> findByIdAndDealershipId(String vehicleId, String dealershipId) {
-        return vehicleRepository.findByIdAndDealershipId(vehicleId, dealershipId);
-    }
-
     public Page<Vehicle> findAllByFilters(String dealershipId, Pageable pageable) {
-        return vehicleRepository.findByDealershipId(dealershipId, pageable);
-    }
-
-    public Page<Vehicle> findAllByFilters(Pageable pageable) {
+        if (dealershipId != null) {
+            return vehicleRepository.findByDealershipId(dealershipId, pageable);
+        }
         return vehicleRepository.findAll(pageable);
     }
 }

@@ -26,8 +26,7 @@ public class VehicleControllerTest extends ApplicationTests<VehicleControllerTes
 
     @Test
     public void shouldReturnOkWhenGetVehicleById() throws Exception {
-        final String uri = fromPath(VEHICLE_SELF_PATH).buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1",
-                "2e55b038-b7af-41b7-b1f8-3c5023f237ac").toUriString();
+        final String uri = fromPath(VEHICLE_SELF_PATH).buildAndExpand("2e55b038-b7af-41b7-b1f8-3c5023f237ac").toUriString();
 
         mockMvc.perform(get(uri))
                 .andDo(print())
@@ -78,8 +77,7 @@ public class VehicleControllerTest extends ApplicationTests<VehicleControllerTes
 
     @Test
     public void shouldReturnCreatedWhenPostVehicle() throws Exception {
-        final String uri = fromPath(VEHICLE_RESOURCE_PATH)
-                .buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString();
+        final String uri = fromPath(VEHICLE_RESOURCE_PATH).toUriString();
 
         String content = super.getScenarioBody("shouldReturnCreatedWhenPostVehicle");
 
@@ -111,9 +109,9 @@ public class VehicleControllerTest extends ApplicationTests<VehicleControllerTes
 
     @Test
     public void shouldReturnBadRequestWhenPostVehicleAndNotExistsDealershipId() throws Exception {
-        final String uri = fromPath(VEHICLE_RESOURCE_PATH).buildAndExpand("NOT_EXISTS").toUriString();
+        final String uri = fromPath(VEHICLE_RESOURCE_PATH).toUriString();
 
-        String content = super.getScenarioBody("shouldReturnCreatedWhenPostVehicle");
+        String content = super.getScenarioBody("shouldReturnBadRequestWhenPostVehicleAndNotExistsDealershipId");
 
         mockMvc.perform(post(uri)
                         .content(content)
@@ -127,8 +125,7 @@ public class VehicleControllerTest extends ApplicationTests<VehicleControllerTes
 
     @Test
     public void shouldReturnBadRequestWhenPostVehicleWithNullBrandType() throws Exception {
-        final String uri = fromPath(VEHICLE_RESOURCE_PATH)
-                .buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString();
+        final String uri = fromPath(VEHICLE_RESOURCE_PATH).toUriString();
 
         String content = super.getScenarioBody("shouldReturnBadRequestWhenPostVehicleWithNullBrandType");
 
@@ -144,8 +141,7 @@ public class VehicleControllerTest extends ApplicationTests<VehicleControllerTes
 
     @Test
     public void shouldReturnBadRequestWhenPostVehicleWithNullFuelType() throws Exception {
-        final String uri = fromPath(VEHICLE_RESOURCE_PATH)
-                .buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString();
+        final String uri = fromPath(VEHICLE_RESOURCE_PATH).toUriString();
 
         String content = super.getScenarioBody("shouldReturnBadRequestWhenPostVehicleWithNullFuelType");
 

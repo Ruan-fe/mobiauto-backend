@@ -19,9 +19,9 @@ public class VehicleAssembler extends RepresentationModelAssemblerSupport<Vehicl
         super(VehicleController.class, VehicleResponseModel.class);
     }
 
-    public Vehicle toEntity(VehicleRequestModel vehicleRequestModel, String dealershipId) {
+    public Vehicle toEntity(VehicleRequestModel vehicleRequestModel) {
         Vehicle vehicle = new Vehicle();
-        vehicle.setDealershipId(dealershipId);
+        vehicle.setDealershipId(vehicleRequestModel.getDealershipId());
         vehicle.setLicensePlate(vehicleRequestModel.getLicensePlate());
         vehicle.setBrandType(vehicleRequestModel.getBrandType());
         vehicle.setModel(vehicleRequestModel.getModel());
@@ -38,13 +38,13 @@ public class VehicleAssembler extends RepresentationModelAssemblerSupport<Vehicl
     @Override
     public VehicleResponseModel toModel(Vehicle vehicle) {
         VehicleResponseModel vehicleResponseModel = new VehicleResponseModel(vehicle);
-        vehicleResponseModel.add(this.buildVehicleSelfLink(vehicle.getId(), vehicle.getDealershipId()));
+        vehicleResponseModel.add(this.buildVehicleSelfLink(vehicle.getId()));
         vehicleResponseModel.add(this.buildDealershipLink(vehicle.getDealershipId()));
         return vehicleResponseModel;
     }
 
-    public Link buildVehicleSelfLink(String vehicleId, String dealershipId) {
-        return linkTo(methodOn(VehicleController.class).findById(vehicleId, dealershipId)).withSelfRel();
+    public Link buildVehicleSelfLink(String vehicleId) {
+        return linkTo(methodOn(VehicleController.class).findById(vehicleId)).withSelfRel();
     }
 
     public Link buildDealershipLink(String dealershipId) {

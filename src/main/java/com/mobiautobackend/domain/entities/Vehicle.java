@@ -5,12 +5,14 @@ import com.mobiautobackend.domain.enumeration.VehicleColor;
 import com.mobiautobackend.domain.enumeration.VehicleFuelType;
 import com.mobiautobackend.domain.enumeration.VehicleTransmissionType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "VEHICLE")
+@DynamicUpdate
 public class Vehicle {
 
     @Id

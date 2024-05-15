@@ -1,9 +1,24 @@
 shouldReturnCreatedWhenPostOpportunity:
   body: >-
     {
+      "vehicleId": "2e55b038-b7af-41b7-b1f8-3c5023f237ac",
       "customer": {
         "name": "Palin Sena",
         "email": "palinsena@gmail.com",
         "phone": "18997845420"
       }
+    }
+shouldReturnCreatedWhenAssignAnOpportunityWithInProgressStatus:
+  body: >-
+    {
+      "memberId": "a5993416-4255-11ec-71d3-0242ac130004",
+      "reason": "Em progresso",
+      "status": "IN_PROGRESS"
+    }
+shouldReturnCreatedWhenAssignAnOpportunityWithApprovedStatus:
+  body: >-
+    {
+      "memberId": "a5993416-4255-11ec-71d3-0242ac130004",
+      "reason": "Venda concluida com sucesso",
+      "status": "APPROVED"
     }

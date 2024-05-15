@@ -5,9 +5,14 @@ import com.mobiautobackend.domain.enumeration.VehicleBrandType;
 import com.mobiautobackend.domain.enumeration.VehicleColor;
 import com.mobiautobackend.domain.enumeration.VehicleFuelType;
 import com.mobiautobackend.domain.enumeration.VehicleTransmissionType;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class VehicleRequestModel {
+
+    @NotBlank
+    @JsonProperty("dealershipId")
+    private String dealershipId;
 
     @NotNull
     @JsonProperty("licensePlate")
@@ -48,6 +53,10 @@ public class VehicleRequestModel {
     @NotNull
     @JsonProperty("color")
     private VehicleColor color;
+
+    public @NotBlank String getDealershipId() {
+        return dealershipId;
+    }
 
     public String getLicensePlate() {
         return licensePlate;

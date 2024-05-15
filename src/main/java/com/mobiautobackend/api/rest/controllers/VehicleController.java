@@ -18,15 +18,13 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
 import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.NOT_AUTHORIZED;
 
 @RestController
 public class VehicleController {
 
-    public static final String VEHICLE_RESOURCE_PATH = DEALERSHIP_SELF_PATH + "/vehicles";
+    public static final String VEHICLE_RESOURCE_PATH = "/api/vehicles";
     public static final String VEHICLE_SELF_PATH = VEHICLE_RESOURCE_PATH + "/{vehicleId}";
-    public static final String VEHICLE_PATH = "/api/vehicles";
 
     private final VehicleService vehicleService;
     private final VehicleAssembler vehicleAssembler;
@@ -44,40 +42,30 @@ public class VehicleController {
     }
 
     @PostMapping(VEHICLE_RESOURCE_PATH)
-    public ResponseEntity<?> create(@PathVariable("dealershipId") final String dealershipId,
-                                    @RequestBody @Valid VehicleRequestModel vehicleRequestModel) {
-        if (!dealershipService.isAnAuthorizedMember(dealershipId)) {
+    public ResponseEntity<?> create(@RequestBody @Valid VehicleRequestModel vehicleRequestModel) {
+        if (!dealershipService.isAnAuthorizedMember(vehicleRequestModel.getDealershipId())) {
             throw new ForbiddenException(NOT_AUTHORIZED);
         }
-        dealershipService.findById(dealershipId)
+        dealershipService.findById(vehicleRequestModel.getDealershipId())
                 .orElseThrow(() -> new BadRequestException(ExceptionMessagesEnum.DEALERSHIP_NOT_FOUND));
 
-        Vehicle vehicle = vehicleAssembler.toEntity(vehicleRequestModel, dealershipId);
+        Vehicle vehicle = vehicleAssembler.toEntity(vehicleRequestModel);
         vehicle = vehicleService.create(vehicle);
 
-        return ResponseEntity.created(vehicleAssembler.buildVehicleSelfLink(vehicle.getId(), vehicle.getDealershipId()).toUri()).build();
+        return ResponseEntity.created(vehicleAssembler.buildVehicleSelfLink(vehicle.getId()).toUri()).build();
     }
 
     @GetMapping(VEHICLE_SELF_PATH)
-    public ResponseEntity<VehicleResponseModel> findById(@PathVariable("vehicleId") final String vehicleId,
-                                                         @PathVariable("dealershipId") final String dealershipId) {
-        Vehicle vehicle = vehicleService.findByIdAndDealershipId(vehicleId, dealershipId)
+    public ResponseEntity<VehicleResponseModel> findById(@PathVariable("vehicleId") final String vehicleId) {
+        Vehicle vehicle = vehicleService.findById(vehicleId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessagesEnum.VEHICLE_NOT_FOUND));
         return ResponseEntity.ok().body(vehicleAssembler.toModel(vehicle));
     }
 
-    //TODO find vehicle by filters, like brand, model...
-
     @GetMapping(VEHICLE_RESOURCE_PATH)
-    public ResponseEntity<PagedModel<VehicleResponseModel>> findAllByDealershipId(@PathVariable("dealershipId") final String dealershipId,
-                                                                                  Pageable pageable) {
+    public ResponseEntity<PagedModel<VehicleResponseModel>> findAllByFilters(@RequestParam(value = "dealershipId", required = false) final String dealershipId,
+                                                                             Pageable pageable) {
         Page<Vehicle> vehicles = vehicleService.findAllByFilters(dealershipId, pageable);
-        return ResponseEntity.ok().body(pagedResponseAssembler.toModel(vehicles, vehicleAssembler));
-    }
-
-    @GetMapping(VEHICLE_PATH)
-    public ResponseEntity<PagedModel<VehicleResponseModel>> findAll(Pageable pageable) {
-        Page<Vehicle> vehicles = vehicleService.findAllByFilters(pageable);
         return ResponseEntity.ok().body(pagedResponseAssembler.toModel(vehicles, vehicleAssembler));
     }
 }

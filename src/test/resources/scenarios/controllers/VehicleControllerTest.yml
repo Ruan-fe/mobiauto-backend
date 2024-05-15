@@ -1,6 +1,7 @@
 shouldReturnCreatedWhenPostVehicle:
   body: >-
     {
+      "dealershipId": "246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1",
       "licensePlate":"ARE-1245",
       "brandType":"VOLKSWAGEN",
       "model":"Gol",
@@ -15,6 +16,7 @@ shouldReturnCreatedWhenPostVehicle:
 shouldReturnBadRequestWhenPostVehicleWithNullBrandType:
   body: >-
     {
+      "dealershipId": "246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1",
       "licensePlate":"ARE-1245",
       "model":"Gol",
       "manufacturingYear":"2016",
@@ -28,6 +30,7 @@ shouldReturnBadRequestWhenPostVehicleWithNullBrandType:
 shouldReturnBadRequestWhenPostVehicleWithNullFuelType:
   body: >-
     {
+      "dealershipId": "246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1",
       "licensePlate":"ARE-1245",
       "brandType":"VOLKSWAGEN",
       "model":"Gol",
@@ -41,6 +44,7 @@ shouldReturnBadRequestWhenPostVehicleWithNullFuelType:
 shouldReturnBadRequestWhenPostVehicleWithInvalidFuelType:
   body: >-
     {
+      "dealershipId": "246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1",
       "licensePlate":"ARE-1245",
       "brandType":"VOLKSWAGEN",
       "model":"Gol",
@@ -49,6 +53,21 @@ shouldReturnBadRequestWhenPostVehicleWithInvalidFuelType:
       "version":"1.6 MSI Highline",
       "transmissionType":"MANUAL",
       "fuelType":"PETROLEO",
+      "doors":"4",
+      "color":"WHITE"
+    }
+shouldReturnBadRequestWhenPostVehicleAndNotExistsDealershipId:
+  body: >-
+    {
+      "dealershipId": "NOT_EXISTS",
+      "licensePlate":"ARE-1245",
+      "brandType":"VOLKSWAGEN",
+      "model":"Gol",
+      "manufacturingYear":"2016",
+      "modelYear":"2017",
+      "version":"1.6 MSI Highline",
+      "transmissionType":"MANUAL",
+      "fuelType":"GASOLINE",
       "doors":"4",
       "color":"WHITE"
     }

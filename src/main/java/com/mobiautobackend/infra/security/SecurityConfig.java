@@ -46,12 +46,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, DEALERSHIP_RESOURCE_PATH).hasAnyRole(MemberRole.USER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, DEALERSHIP_SELF_PATH).permitAll()
                         .requestMatchers(HttpMethod.POST, OPPORTUNITY_RESOURCE_PATH).permitAll()
+                        .requestMatchers(HttpMethod.POST, OPPORTUNITY_ASSIGN_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, OPPORTUNITY_SELF_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, OPPORTUNITY_RESOURCE_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, OPPORTUNITY_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, VEHICLE_RESOURCE_PATH).hasAnyRole(MemberRole.OWNER.name(), MemberRole.MANAGER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, VEHICLE_RESOURCE_PATH).permitAll()
-                        .requestMatchers(HttpMethod.GET, VEHICLE_PATH).permitAll()
                         .requestMatchers(HttpMethod.GET, VEHICLE_SELF_PATH).permitAll()
                         .anyRequest().hasRole(MemberRole.ADMIN.name()))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();

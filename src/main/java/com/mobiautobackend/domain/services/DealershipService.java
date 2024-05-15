@@ -64,7 +64,7 @@ public class DealershipService {
                 if (Objects.equals(authenticatedMember.getId(), searchedMember.getId())) {
                     return authenticatedMember.isOwner() || authenticatedMember.isManager() || authenticatedMember.isAssistant();
                 } else {
-                    return false;
+                    return authenticatedMember.isOwner() || authenticatedMember.isManager();
                 }
             }
             return false;

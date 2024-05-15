@@ -3,6 +3,7 @@ package com.mobiautobackend.api.rest.assemblers;
 import com.mobiautobackend.api.rest.controllers.DealershipController;
 import com.mobiautobackend.api.rest.controllers.OpportunityController;
 import com.mobiautobackend.api.rest.controllers.VehicleController;
+import com.mobiautobackend.api.rest.models.request.OpportunityAssignRequestModel;
 import com.mobiautobackend.api.rest.models.request.OpportunityRequestModel;
 import com.mobiautobackend.api.rest.models.response.OpportunityResponseModel;
 import com.mobiautobackend.domain.entities.Customer;
@@ -26,7 +27,6 @@ public class OpportunityAssembler extends RepresentationModelAssemblerSupport<Op
     public OpportunityResponseModel toModel(Opportunity opportunity) {
         OpportunityResponseModel opportunityResponseModel = new OpportunityResponseModel(opportunity, opportunity.getCustomer());
         opportunityResponseModel.add(this.buildOpportunitySelfLink(opportunity));
-        opportunityResponseModel.add(this.buildVehicleLink(opportunity.getVehicleId(), opportunity.getDealershipId()));
         opportunityResponseModel.add(this.buildDealershipLink(opportunity.getDealershipId()));
         return opportunityResponseModel;
     }
@@ -48,15 +48,28 @@ public class OpportunityAssembler extends RepresentationModelAssemblerSupport<Op
     }
 
     public Link buildOpportunitySelfLink(Opportunity opportunity) {
-        return linkTo(methodOn(OpportunityController.class).findById(opportunity.getDealershipId(),
-                opportunity.getVehicleId(), opportunity.getId())).withSelfRel();
+        return linkTo(methodOn(OpportunityController.class).findById(opportunity.getId())).withSelfRel();
     }
 
-    public Link buildVehicleLink(String vehicleId, String dealershipId) {
-        return linkTo(methodOn(VehicleController.class).findById(vehicleId, dealershipId)).withRel("vehicle");
+    public Link buildVehicleLink(String vehicleId) {
+        return linkTo(methodOn(VehicleController.class).findById(vehicleId)).withRel("vehicle");
     }
 
     public Link buildDealershipLink(String dealershipId) {
         return linkTo(methodOn(DealershipController.class).findById(dealershipId)).withRel("dealership");
+    }
+
+    public Opportunity toEntity(OpportunityAssignRequestModel assignRequestModel, Opportunity opportunityOld) {
+        Opportunity opportunity = new Opportunity();
+        opportunity.setId(opportunityOld.getId());
+        opportunity.setCustomer(opportunityOld.getCustomer());
+        opportunity.setVehicleId(opportunityOld.getVehicleId());
+        opportunity.setDealershipId(opportunityOld.getDealershipId());
+        opportunity.setAssignDate(opportunityOld.getAssignDate());
+        opportunity.setCreationDate(opportunityOld.getCreationDate());
+        opportunity.setStatus(assignRequestModel.getStatus());
+        opportunity.setMemberId(assignRequestModel.getMemberId());
+        opportunity.setReason(assignRequestModel.getReason());
+        return opportunity;
     }
 }

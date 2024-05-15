@@ -12,15 +12,10 @@ import java.util.Optional;
 
 @Repository
 public interface OpportunityRepository extends JpaRepository<Opportunity, String> {
-    Page<Opportunity> findByDealershipIdAndVehicleIdAndStatusIn(String dealershipId, String vehicleId, List<OpportunityStatus> statuses, Pageable pageable);
-
-    Optional<Opportunity> findByIdAndDealershipIdAndVehicleId(String id, String dealershipId, String vehicleId);
-
     Optional<Opportunity> findByCustomerEmailAndVehicleIdAndStatusIn(String email, String vehicleId, List<OpportunityStatus> statuses);
 
     Page<Opportunity> findByDealershipIdAndStatusIn(String dealershipId, List<OpportunityStatus> statuses, Pageable pageable);
 
     Page<Opportunity> findByDealershipId(String dealershipId, Pageable pageable);
 
-    Page<Opportunity> findByDealershipIdAndVehicleId(String dealershipId, String vehicleId, Pageable pageable);
 }

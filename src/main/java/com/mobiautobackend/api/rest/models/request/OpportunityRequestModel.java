@@ -13,12 +13,16 @@ public class OpportunityRequestModel {
     @JsonProperty("customer")
     private Customer customer;
 
+    @NotBlank
+    @JsonProperty
+    private String vehicleId;
+
     public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public String getVehicleId() {
+        return vehicleId;
     }
 
     public static class Customer {

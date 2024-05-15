@@ -20,6 +20,8 @@ import java.time.ZonedDateTime;
         "status",
         "memberId",
         "reason",
+        "assignDate",
+        "conclusionDate",
         "creationDate"
 })
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -47,6 +49,14 @@ public class OpportunityResponseModel extends RepresentationModel<OpportunityRes
     @JsonProperty("reason")
     private String reason;
 
+    @JsonProperty("assignDate")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private ZonedDateTime assignDate;
+
+    @JsonProperty("conclusionDate")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    private ZonedDateTime conclusionDate;
+
     @JsonProperty("creationDate")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private ZonedDateTime creationDate;
@@ -62,6 +72,8 @@ public class OpportunityResponseModel extends RepresentationModel<OpportunityRes
         this.status = opportunity.getStatus();
         this.memberId = opportunity.getMemberId();
         this.reason = opportunity.getReason();
+        this.assignDate = opportunity.getAssignDate();
+        this.conclusionDate = opportunity.getConclusionDate();
         this.creationDate = opportunity.getCreationDate();
     }
 

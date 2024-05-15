@@ -5,13 +5,16 @@ import com.mobiautobackend.domain.entities.Opportunity;
 import com.mobiautobackend.domain.enumeration.OpportunityStatus;
 import com.mobiautobackend.domain.repositories.CustomerRepository;
 import com.mobiautobackend.domain.repositories.OpportunityRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,6 +29,7 @@ public class OpportunityService {
         this.customerRepository = customerRepository;
     }
 
+    @Transactional
     public Opportunity create(Opportunity opportunity) {
         opportunity.setCustomer(this.createCustomer(opportunity.getCustomer()));
         return opportunityRepository.save(opportunity);
@@ -39,15 +43,8 @@ public class OpportunityService {
         return opportunityRepository.findByCustomerEmailAndVehicleIdAndStatusIn(email, vehicleId, statuses);
     }
 
-    public Optional<Opportunity> findByIdAndDealershipIdAndVehicleId(String opportunityId, String dealershipId, String vehicleId) {
-        return opportunityRepository.findByIdAndDealershipIdAndVehicleId(opportunityId, dealershipId, vehicleId);
-    }
-
-    public Page<Opportunity> findAllByFilters(String dealershipId, String vehicleId, List<OpportunityStatus> statuses, Pageable pageable) {
-        if (CollectionUtils.isEmpty(statuses)) {
-            return opportunityRepository.findByDealershipIdAndVehicleId(dealershipId, vehicleId, pageable);
-        }
-        return opportunityRepository.findByDealershipIdAndVehicleIdAndStatusIn(dealershipId, vehicleId, statuses, pageable);
+    public Optional<Opportunity> findById(String opportunityId) {
+        return opportunityRepository.findById(opportunityId);
     }
 
     public Page<Opportunity> findAllByFilters(String dealershipId, List<OpportunityStatus> statuses, Pageable pageable) {
@@ -55,5 +52,16 @@ public class OpportunityService {
             return opportunityRepository.findByDealershipId(dealershipId, pageable);
         }
         return opportunityRepository.findByDealershipIdAndStatusIn(dealershipId, statuses, pageable);
+    }
+
+    @Transactional
+    public Opportunity assign(Opportunity opportunity) {
+        if (Objects.equals(opportunity.getStatus(), OpportunityStatus.IN_PROGRESS)) {
+            opportunity.setAssignDate(ZonedDateTime.now());
+        } else if (Objects.equals(opportunity.getStatus(), OpportunityStatus.APPROVED) ||
+                Objects.equals(opportunity.getStatus(), OpportunityStatus.REPROVED)) {
+            opportunity.setConclusionDate(ZonedDateTime.now());
+        }
+        return opportunityRepository.save(opportunity);
     }
 }

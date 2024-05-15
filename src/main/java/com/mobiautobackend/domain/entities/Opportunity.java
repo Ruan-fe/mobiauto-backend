@@ -2,12 +2,14 @@ package com.mobiautobackend.domain.entities;
 
 import com.mobiautobackend.domain.enumeration.OpportunityStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "OPPORTUNITY")
+@DynamicUpdate
 public class Opportunity {
 
     @Id
