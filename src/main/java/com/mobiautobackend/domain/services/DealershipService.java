@@ -6,11 +6,13 @@ import com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum;
 import com.mobiautobackend.domain.enumeration.MemberRole;
 import com.mobiautobackend.domain.exceptions.BadRequestException;
 import com.mobiautobackend.domain.repositories.DealershipRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -19,10 +21,13 @@ import java.util.Optional;
 public class DealershipService {
 
     private final DealershipRepository dealershipRepository;
+    private final MemberService memberService;
 
     @Autowired
-    public DealershipService(DealershipRepository dealershipRepository) {
+    public DealershipService(DealershipRepository dealershipRepository,
+                             MemberService memberService) {
         this.dealershipRepository = dealershipRepository;
+        this.memberService = memberService;
     }
 
     public Optional<Dealership> findById(String dealershipId) {
@@ -37,14 +42,16 @@ public class DealershipService {
         return dealershipRepository.findByMembersId(memberId);
     }
 
+    @Transactional
     public Dealership create(Dealership dealership) {
+        memberService.updateMemberRole(CollectionUtils.firstElement(dealership.getMembers()).getId(), MemberRole.OWNER);
         return dealershipRepository.save(dealership);
     }
 
     public boolean isAnAuthorizedMember(String dealershipId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(MemberRole.ADMIN.toString()))) {
+            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
                 return true;
             }
             Member authenticatedMember = (Member) authentication.getPrincipal();

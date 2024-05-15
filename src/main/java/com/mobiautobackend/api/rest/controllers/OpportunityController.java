@@ -34,6 +34,8 @@ public class OpportunityController {
     public static final String OPPORTUNITY_RESOURCE_PATH = VEHICLE_SELF_PATH + "/opportunities";
     public static final String OPPORTUNITY_SELF_PATH = OPPORTUNITY_RESOURCE_PATH + "/{opportunityId}";
     public static final String OPPORTUNITY_PATH = DEALERSHIP_SELF_PATH + "/opportunities";
+    public static final String OPPORTUNITY_ASSIGN_PATH = OPPORTUNITY_PATH + "/assign" ;
+
 
     private final OpportunityService opportunityService;
     private final OpportunityAssembler opportunityAssembler;

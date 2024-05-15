@@ -2,6 +2,7 @@ package com.mobiautobackend.domain.entities;
 
 import com.mobiautobackend.domain.enumeration.MemberRole;
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "MEMBER")
+@DynamicUpdate
 public class Member implements UserDetails {
 
     @Id

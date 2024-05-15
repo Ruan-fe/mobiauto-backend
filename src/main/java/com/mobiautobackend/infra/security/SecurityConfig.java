@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, MEMBER_RESOURCE_PATH).hasRole(MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, MEMBER_SELF_PATH).authenticated()
                         .requestMatchers(HttpMethod.POST, DEALERSHIP_RESOURCE_PATH).hasAnyRole(MemberRole.USER.name(), MemberRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, DEALERSHIP_SELF_PATH).authenticated()
+                        .requestMatchers(HttpMethod.GET, DEALERSHIP_SELF_PATH).permitAll()
                         .requestMatchers(HttpMethod.POST, OPPORTUNITY_RESOURCE_PATH).permitAll()
                         .requestMatchers(HttpMethod.GET, OPPORTUNITY_SELF_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, OPPORTUNITY_RESOURCE_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())

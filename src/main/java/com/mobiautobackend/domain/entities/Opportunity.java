@@ -33,10 +33,14 @@ public class Opportunity {
     @Column(name = "VEHICLE_ID", nullable = false)
     private String vehicleId;
 
+    @Column(name = "ASSIGN_DATE")
+    private ZonedDateTime assignDate;
+
+    @Column(name = "CONCLUSION_DATE")
+    private ZonedDateTime conclusionDate;
+
     @Column(name = "CREATION_DATE", nullable = false)
     private ZonedDateTime creationDate;
-
-    //TODO data de assign, conclusion date
 
     @PrePersist
     private void prePersist() {
@@ -98,6 +102,22 @@ public class Opportunity {
 
     public void setVehicleId(String vehicleId) {
         this.vehicleId = vehicleId;
+    }
+
+    public ZonedDateTime getAssignDate() {
+        return assignDate;
+    }
+
+    public void setAssignDate(ZonedDateTime assignDate) {
+        this.assignDate = assignDate;
+    }
+
+    public ZonedDateTime getConclusionDate() {
+        return conclusionDate;
+    }
+
+    public void setConclusionDate(ZonedDateTime conclusionDate) {
+        this.conclusionDate = conclusionDate;
     }
 
     public ZonedDateTime getCreationDate() {

@@ -33,7 +33,7 @@ public class DealershipResponseModel extends RepresentationModel<DealershipRespo
     private String cnpj;
 
     @JsonProperty("members")
-    private List<MemberResponseModel> members;
+    private List<MemberResponseModel> members; //TODO TALVEZ REMOVER?
 
     @JsonProperty("creationDate")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")

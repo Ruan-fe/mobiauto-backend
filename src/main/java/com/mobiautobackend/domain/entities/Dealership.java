@@ -1,6 +1,7 @@
 package com.mobiautobackend.domain.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "DEALERSHIP")
+@DynamicUpdate
 public class Dealership {
 
     @Id

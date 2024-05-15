@@ -1,7 +1,9 @@
 package com.mobiautobackend.domain.services;
 
 import com.mobiautobackend.domain.entities.Member;
+import com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum;
 import com.mobiautobackend.domain.enumeration.MemberRole;
+import com.mobiautobackend.domain.exceptions.BadRequestException;
 import com.mobiautobackend.domain.repositories.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +49,20 @@ public class MemberService implements UserDetailsService {
     public boolean isAnAuthorizedMember(String memberId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(MemberRole.ADMIN.toString()))) {
+            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
                 return true;
             }
             Member member = (Member) authentication.getPrincipal();
             return Objects.equals(memberId, member.getId());
         }
         return true;
+    }
+
+    public void updateMemberRole(String memberId, MemberRole role) {
+        Member member = this.findById(memberId).orElseThrow(() ->
+                new BadRequestException(ExceptionMessagesEnum.MEMBER_NOT_FOUND));
+        member.setRole(role);
+        memberRepository.save(member);
     }
 
     @PostConstruct
