@@ -2,7 +2,6 @@ package com.mobiautobackend.api.rest.assemblers;
 
 import com.mobiautobackend.api.rest.controllers.MemberController;
 import com.mobiautobackend.api.rest.models.request.MemberRequestModel;
-import com.mobiautobackend.api.rest.models.response.MemberAuthResponseModel;
 import com.mobiautobackend.api.rest.models.response.MemberResponseModel;
 import com.mobiautobackend.domain.entities.Member;
 import com.mobiautobackend.domain.enumeration.MemberRole;
@@ -26,10 +25,6 @@ public class MemberAssembler extends RepresentationModelAssemblerSupport<Member,
         MemberResponseModel memberResponseModel = new MemberResponseModel(member);
         memberResponseModel.add(this.buildMemberSelfLink(member.getId()));
         return memberResponseModel;
-    }
-
-    public MemberAuthResponseModel toModel(String token) {
-        return new MemberAuthResponseModel(token);
     }
 
     public Member toEntity(MemberRequestModel memberRequestModel) {

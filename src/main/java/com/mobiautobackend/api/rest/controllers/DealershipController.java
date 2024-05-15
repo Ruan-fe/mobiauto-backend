@@ -36,6 +36,9 @@ public class DealershipController {
 
     @PostMapping(DEALERSHIP_RESOURCE_PATH)
     public ResponseEntity<?> create(@RequestBody @Valid DealershipRequestModel dealershipRequestModel) {
+        if (!memberService.isAllowed(dealershipRequestModel.getMemberId())) {
+            //TODO lançar exception
+        }
         memberService.findById(dealershipRequestModel.getMemberId())
                 .orElseThrow(() -> new BadRequestException(ExceptionMessagesEnum.MEMBER_NOT_FOUND));
 

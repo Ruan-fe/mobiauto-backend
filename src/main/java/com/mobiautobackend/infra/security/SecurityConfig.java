@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.mobiautobackend.api.rest.controllers.AuthenticationController.AUTHENTICATION_RESOURCE_PATH;
 import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_RESOURCE_PATH;
 import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
 import static com.mobiautobackend.api.rest.controllers.MemberController.*;
@@ -39,7 +40,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, MEMBER_AUTH_PATH).permitAll()
+                        .requestMatchers(HttpMethod.POST, AUTHENTICATION_RESOURCE_PATH).permitAll()
                         .requestMatchers(HttpMethod.POST, MEMBER_RESOURCE_PATH).hasRole(MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, MEMBER_SELF_PATH).authenticated()
                         .requestMatchers(HttpMethod.POST, DEALERSHIP_RESOURCE_PATH).hasAnyRole(MemberRole.USER.name(), MemberRole.ADMIN.name())
