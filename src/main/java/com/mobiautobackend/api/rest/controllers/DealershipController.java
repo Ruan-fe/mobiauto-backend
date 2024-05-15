@@ -57,6 +57,4 @@ public class DealershipController {
                 new NotFoundException(ExceptionMessagesEnum.DEALERSHIP_NOT_FOUND));
         return ResponseEntity.ok().body(dealershipAssembler.toModel(dealership));
     }
-
-    //TODO get all lojas
 }

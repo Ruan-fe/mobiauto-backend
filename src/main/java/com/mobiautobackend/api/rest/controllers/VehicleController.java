@@ -20,6 +20,7 @@ public class VehicleController {
 
     public static final String VEHICLE_RESOURCE_PATH = DEALERSHIP_SELF_PATH + "/vehicles";
     public static final String VEHICLE_SELF_PATH = VEHICLE_RESOURCE_PATH + "/{vehicleId}";
+    public static final String VEHICLE_PATH = "/api/vehicles";
 
     private final VehicleService vehicleService;
     private final VehicleAssembler vehicleAssembler;
@@ -36,6 +37,7 @@ public class VehicleController {
     @PostMapping(VEHICLE_RESOURCE_PATH)
     public ResponseEntity<?> create(@PathVariable("dealershipId") final String dealershipId,
                                     @RequestBody @Valid VehicleRequestModel vehicleRequestModel) {
+        //TODO validar que o usuario autenticado pertence e tem cargo na loja
         dealershipService.findById(dealershipId)
                 .orElseThrow(() -> new BadRequestException(ExceptionMessagesEnum.DEALERSHIP_NOT_FOUND));
 
@@ -54,4 +56,5 @@ public class VehicleController {
     }
 
     //TODO get all vehicle
+    //TODO get all vehicle from store
 }

@@ -75,16 +75,17 @@ public class Member implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        final String ROLE_USER = "ROLE_USER";
         if (Objects.equals(this.role, MemberRole.ADMIN)) {
-            return List.of(new SimpleGrantedAuthority(MemberRole.ADMIN.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else if (Objects.equals(this.role, MemberRole.MANAGER)) {
-            return List.of(new SimpleGrantedAuthority(MemberRole.MANAGER.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+            return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"), new SimpleGrantedAuthority(ROLE_USER));
         } else if (Objects.equals(this.role, MemberRole.ASSISTANT)) {
-            return List.of(new SimpleGrantedAuthority(MemberRole.ASSISTANT.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+            return List.of(new SimpleGrantedAuthority("ROLE_ASSISTANT"), new SimpleGrantedAuthority(ROLE_USER));
         } else if (Objects.equals(this.role, MemberRole.OWNER)) {
-            return List.of(new SimpleGrantedAuthority(MemberRole.OWNER.name()), new SimpleGrantedAuthority(MemberRole.USER.name()));
+            return List.of(new SimpleGrantedAuthority("ROLE_OWNER"), new SimpleGrantedAuthority(ROLE_USER));
         } else {
-            return List.of(new SimpleGrantedAuthority(MemberRole.USER.name()));
+            return List.of(new SimpleGrantedAuthority(ROLE_USER));
         }
     }
 

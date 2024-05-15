@@ -1,5 +1,6 @@
 package com.mobiautobackend.infra.security;
 
+import com.mobiautobackend.domain.enumeration.MemberRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.mobiautobackend.api.rest.controllers.MemberController.MEMBER_AUTH_PATH;
-import static com.mobiautobackend.api.rest.controllers.MemberController.MEMBER_RESOURCE_PATH;
-import static com.mobiautobackend.api.rest.controllers.OpportunityController.OPPORTUNITY_RESOURCE_PATH;
-import static com.mobiautobackend.api.rest.controllers.VehicleController.VEHICLE_RESOURCE_PATH;
-import static com.mobiautobackend.api.rest.controllers.VehicleController.VEHICLE_SELF_PATH;
+import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_RESOURCE_PATH;
+import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
+import static com.mobiautobackend.api.rest.controllers.MemberController.*;
+import static com.mobiautobackend.api.rest.controllers.OpportunityController.*;
+import static com.mobiautobackend.api.rest.controllers.VehicleController.*;
 
 @Configuration
 @EnableWebSecurity
@@ -39,15 +40,20 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, MEMBER_AUTH_PATH).permitAll()
-                        .requestMatchers(HttpMethod.POST, MEMBER_RESOURCE_PATH).permitAll()
+                        .requestMatchers(HttpMethod.POST, MEMBER_RESOURCE_PATH).hasRole(MemberRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, MEMBER_SELF_PATH).authenticated()
+                        .requestMatchers(HttpMethod.POST, DEALERSHIP_RESOURCE_PATH).hasAnyRole(MemberRole.USER.name(), MemberRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, DEALERSHIP_SELF_PATH).authenticated()
                         .requestMatchers(HttpMethod.POST, OPPORTUNITY_RESOURCE_PATH).permitAll()
+                        .requestMatchers(HttpMethod.GET, OPPORTUNITY_SELF_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, OPPORTUNITY_RESOURCE_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, OPPORTUNITY_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, VEHICLE_RESOURCE_PATH).hasAnyRole(MemberRole.OWNER.name(), MemberRole.MANAGER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, VEHICLE_RESOURCE_PATH).permitAll()
+                        .requestMatchers(HttpMethod.GET, VEHICLE_PATH).permitAll()
                         .requestMatchers(HttpMethod.GET, VEHICLE_SELF_PATH).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/teste").hasRole("ADMIN")
-                        .anyRequest().denyAll()
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                        .anyRequest().hasRole(MemberRole.ADMIN.name()))
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 
     @Bean

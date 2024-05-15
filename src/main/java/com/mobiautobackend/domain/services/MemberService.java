@@ -1,11 +1,14 @@
 package com.mobiautobackend.domain.services;
 
 import com.mobiautobackend.domain.entities.Member;
+import com.mobiautobackend.domain.enumeration.MemberRole;
 import com.mobiautobackend.domain.repositories.MemberRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,6 +37,15 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username)); //Todo está lançando 500
+        return findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    @PostConstruct
+    private void createInitialAdminUser() {
+        Member member = new Member();
+        member.setEmail("admin@mobiautobackend.com");
+        member.setPassword(new BCryptPasswordEncoder().encode("admin"));
+        member.setRole(MemberRole.ADMIN);
+        this.create(member);
     }
 }

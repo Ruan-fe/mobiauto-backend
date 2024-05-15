@@ -72,6 +72,7 @@ public class OpportunityController {
     public ResponseEntity<OpportunityResponseModel> findById(@PathVariable("dealershipId") final String dealershipId,
                                                              @PathVariable("vehicleId") final String vehicleId,
                                                              @PathVariable("opportunityId") final String opportunityId) {
+        //TODO validar que o usuario autenticado pertence e tem cargo na loja
         Opportunity opportunity = opportunityService.findByIdAndDealershipIdAndVehicleId(opportunityId, dealershipId, vehicleId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessagesEnum.OPPORTUNITY_NOT_FOUND));
         return ResponseEntity.ok().body(opportunityAssembler.toModel(opportunity));
@@ -82,6 +83,7 @@ public class OpportunityController {
                                                                                  @PathVariable(value = "vehicleId") final String vehicleId,
                                                                                  @MatrixVariable(value = "statuses", required = false) final List<OpportunityStatus> statuses,
                                                                                  Pageable pageable) {
+        //TODO validar que o usuario autenticado pertence e tem cargo na loja
         Page<Opportunity> opportunities = opportunityService.findAllByFilters(dealershipId, vehicleId, statuses, pageable);
         return ResponseEntity.ok().body(pagedResponseAssembler.toModel(opportunities, opportunityAssembler));
     }
@@ -90,6 +92,7 @@ public class OpportunityController {
     public ResponseEntity<PagedModel<OpportunityResponseModel>> findAllByDealershipIdAndFilters(@PathVariable("dealershipId") final String dealershipId,
                                                                                                 @MatrixVariable(value = "statuses", required = false) final List<OpportunityStatus> statuses,
                                                                                                 Pageable pageable) {
+        //TODO validar que o usuario autenticado pertence e tem cargo na loja
         Page<Opportunity> opportunities = opportunityService.findAllByFilters(dealershipId, statuses, pageable);
         return ResponseEntity.ok().body(pagedResponseAssembler.toModel(opportunities, opportunityAssembler));
     }
