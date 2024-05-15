@@ -45,7 +45,9 @@ public class MemberController {
 
     @GetMapping(MEMBER_SELF_PATH)
     public ResponseEntity<MemberResponseModel> findById(@PathVariable("memberId") final String memberId) {
-        //TODO validar que o usuario autenticado é o mesmo do passado por parametro
+        if (!memberService.isAllowed(memberId)) {
+            //TODO lançar exception
+        }
         Member member = memberService.findById(memberId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessagesEnum.MEMBER_NOT_FOUND));
         return ResponseEntity.ok().body(memberAssembler.toModel(member));
