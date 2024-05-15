@@ -61,7 +61,7 @@ public class OpportunityControllerTest extends ApplicationTests<OpportunityContr
 
         String uri = fromPath(OPPORTUNITY_RESOURCE_PATH)
                 .buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1", "2e55b038-b7af-41b7-b1f8-3c5023f237ac")
-                .toUriString().concat(";statuses=NEW,APPROVED");
+                .toUriString().concat("?statuses=NEW,APPROVED");
 
         mockMvc.perform(get(uri))
                 .andDo(print())
@@ -84,7 +84,7 @@ public class OpportunityControllerTest extends ApplicationTests<OpportunityContr
                 .andExpect(jsonPath("$.page.number").value(0));
 
         uri = fromPath(OPPORTUNITY_PATH)
-                .buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString().concat(";statuses=APPROVED");
+                .buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString().concat("?statuses=APPROVED");
 
         mockMvc.perform(get(uri))
                 .andDo(print())

@@ -8,7 +8,9 @@ import com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum;
 import com.mobiautobackend.domain.enumeration.OpportunityStatus;
 import com.mobiautobackend.domain.exceptions.BadRequestException;
 import com.mobiautobackend.domain.exceptions.ConflictException;
+import com.mobiautobackend.domain.exceptions.ForbiddenException;
 import com.mobiautobackend.domain.exceptions.NotFoundException;
+import com.mobiautobackend.domain.services.DealershipService;
 import com.mobiautobackend.domain.services.OpportunityService;
 import com.mobiautobackend.domain.services.VehicleService;
 import jakarta.validation.Valid;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
 import static com.mobiautobackend.api.rest.controllers.VehicleController.VEHICLE_SELF_PATH;
+import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.NOT_AUTHORIZED;
 
 @RestController
 public class OpportunityController {
@@ -36,16 +39,19 @@ public class OpportunityController {
     private final OpportunityAssembler opportunityAssembler;
     private final VehicleService vehicleService;
     private final PagedResourcesAssembler<Opportunity> pagedResponseAssembler;
+    private final DealershipService dealershipService;
 
     @Autowired
     public OpportunityController(OpportunityService opportunityService,
                                  OpportunityAssembler opportunityAssembler,
                                  VehicleService vehicleService,
-                                 PagedResourcesAssembler<Opportunity> pagedResponseAssembler) {
+                                 PagedResourcesAssembler<Opportunity> pagedResponseAssembler,
+                                 DealershipService dealershipService) {
         this.opportunityService = opportunityService;
         this.opportunityAssembler = opportunityAssembler;
         this.vehicleService = vehicleService;
         this.pagedResponseAssembler = pagedResponseAssembler;
+        this.dealershipService = dealershipService;
     }
 
     @PostMapping(OPPORTUNITY_RESOURCE_PATH)
@@ -72,27 +78,33 @@ public class OpportunityController {
     public ResponseEntity<OpportunityResponseModel> findById(@PathVariable("dealershipId") final String dealershipId,
                                                              @PathVariable("vehicleId") final String vehicleId,
                                                              @PathVariable("opportunityId") final String opportunityId) {
-        //TODO validar que o usuario autenticado pertence e tem cargo na loja
+        if (!dealershipService.isAnAuthorizedMember(dealershipId)) {
+            throw new ForbiddenException(NOT_AUTHORIZED);
+        }
         Opportunity opportunity = opportunityService.findByIdAndDealershipIdAndVehicleId(opportunityId, dealershipId, vehicleId)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessagesEnum.OPPORTUNITY_NOT_FOUND));
         return ResponseEntity.ok().body(opportunityAssembler.toModel(opportunity));
     }
 
-    @GetMapping(OPPORTUNITY_RESOURCE_PATH + "{matrixParam}")
+    @GetMapping(OPPORTUNITY_RESOURCE_PATH)
     public ResponseEntity<PagedModel<OpportunityResponseModel>> findAllByFilters(@PathVariable("dealershipId") final String dealershipId,
                                                                                  @PathVariable(value = "vehicleId") final String vehicleId,
-                                                                                 @MatrixVariable(value = "statuses", required = false) final List<OpportunityStatus> statuses,
+                                                                                 @RequestParam(value = "statuses", required = false) final List<OpportunityStatus> statuses,
                                                                                  Pageable pageable) {
-        //TODO validar que o usuario autenticado pertence e tem cargo na loja
+        if (!dealershipService.isAnAuthorizedMember(dealershipId)) {
+            throw new ForbiddenException(NOT_AUTHORIZED);
+        }
         Page<Opportunity> opportunities = opportunityService.findAllByFilters(dealershipId, vehicleId, statuses, pageable);
         return ResponseEntity.ok().body(pagedResponseAssembler.toModel(opportunities, opportunityAssembler));
     }
 
-    @GetMapping(OPPORTUNITY_PATH + "{matrixParam}")
+    @GetMapping(OPPORTUNITY_PATH)
     public ResponseEntity<PagedModel<OpportunityResponseModel>> findAllByDealershipIdAndFilters(@PathVariable("dealershipId") final String dealershipId,
-                                                                                                @MatrixVariable(value = "statuses", required = false) final List<OpportunityStatus> statuses,
+                                                                                                @RequestParam(value = "statuses", required = false) final List<OpportunityStatus> statuses,
                                                                                                 Pageable pageable) {
-        //TODO validar que o usuario autenticado pertence e tem cargo na loja
+        if (!dealershipService.isAnAuthorizedMember(dealershipId)) {
+            throw new ForbiddenException(NOT_AUTHORIZED);
+        }
         Page<Opportunity> opportunities = opportunityService.findAllByFilters(dealershipId, statuses, pageable);
         return ResponseEntity.ok().body(pagedResponseAssembler.toModel(opportunities, opportunityAssembler));
     }

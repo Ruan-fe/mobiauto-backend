@@ -6,12 +6,15 @@ import com.mobiautobackend.api.rest.models.response.MemberResponseModel;
 import com.mobiautobackend.domain.entities.Member;
 import com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum;
 import com.mobiautobackend.domain.exceptions.ConflictException;
+import com.mobiautobackend.domain.exceptions.ForbiddenException;
 import com.mobiautobackend.domain.exceptions.NotFoundException;
 import com.mobiautobackend.domain.services.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.NOT_AUTHORIZED;
 
 @RestController
 public class MemberController {
@@ -45,8 +48,8 @@ public class MemberController {
 
     @GetMapping(MEMBER_SELF_PATH)
     public ResponseEntity<MemberResponseModel> findById(@PathVariable("memberId") final String memberId) {
-        if (!memberService.isAllowed(memberId)) {
-            //TODO lançar exception
+        if (!memberService.isAnAuthorizedMember(memberId)) {
+            throw new ForbiddenException(NOT_AUTHORIZED);
         }
         Member member = memberService.findById(memberId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessagesEnum.MEMBER_NOT_FOUND));

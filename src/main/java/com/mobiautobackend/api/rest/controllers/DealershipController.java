@@ -7,6 +7,7 @@ import com.mobiautobackend.domain.entities.Dealership;
 import com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum;
 import com.mobiautobackend.domain.exceptions.BadRequestException;
 import com.mobiautobackend.domain.exceptions.ConflictException;
+import com.mobiautobackend.domain.exceptions.ForbiddenException;
 import com.mobiautobackend.domain.exceptions.NotFoundException;
 import com.mobiautobackend.domain.services.DealershipService;
 import com.mobiautobackend.domain.services.MemberService;
@@ -14,6 +15,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.NOT_AUTHORIZED;
 
 @RestController
 public class DealershipController {
@@ -36,8 +39,8 @@ public class DealershipController {
 
     @PostMapping(DEALERSHIP_RESOURCE_PATH)
     public ResponseEntity<?> create(@RequestBody @Valid DealershipRequestModel dealershipRequestModel) {
-        if (!memberService.isAllowed(dealershipRequestModel.getMemberId())) {
-            //TODO lançar exception
+        if (!memberService.isAnAuthorizedMember(dealershipRequestModel.getMemberId())) {
+            throw new ForbiddenException(NOT_AUTHORIZED);
         }
         memberService.findById(dealershipRequestModel.getMemberId())
                 .orElseThrow(() -> new BadRequestException(ExceptionMessagesEnum.MEMBER_NOT_FOUND));

@@ -49,6 +49,18 @@ public class Member implements UserDetails {
         creationDate = ZonedDateTime.now();
     }
 
+    public boolean isOwner() {
+        return Objects.equals(this.role, MemberRole.OWNER);
+    }
+
+    public boolean isManager() {
+        return Objects.equals(this.role, MemberRole.MANAGER);
+    }
+
+    public boolean isAssistant() {
+        return Objects.equals(this.role, MemberRole.ASSISTANT);
+    }
+
     public void setId(String id) {
         this.id = id;
     }

@@ -11,4 +11,6 @@ public interface DealershipRepository extends CrudRepository<Dealership, String>
     Optional<Dealership> findByCnpj(String cnpj);
 
     Optional<Dealership> findByCnpjOrMembersId(String cnpj, String memberId);
+
+    Optional<Dealership> findByMembersId(String id);
 }

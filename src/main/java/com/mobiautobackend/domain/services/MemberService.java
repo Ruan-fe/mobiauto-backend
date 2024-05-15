@@ -44,7 +44,7 @@ public class MemberService implements UserDetailsService {
         return findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
-    public boolean isAllowed(String memberId) {
+    public boolean isAnAuthorizedMember(String memberId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(MemberRole.ADMIN.toString()))) {
