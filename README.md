@@ -5,7 +5,12 @@ Para buildar a aplicação, execute:
 ./mvnw clean install
 ```
 ### Run
-Para rodar execute o comando abaixo:
+Para rodar a aplicação pelo docker execute o comando abaixo:
+```bash
+docker-compose up --build
+```
+
+Para rodar a aplicação pelo maven execute o comando abaixo:
 ```bash
 ./mvnw spring-boot:run
 ```
@@ -19,9 +24,7 @@ Para rodar os testes unitários:
 ### Para realizar testes locais:
 ```bash
 Via Postman:
-É necessário efetuar o download da coleção e importar no postman. 
-
-Pelo caminho:
+É necessário efetuar o download da coleção e importar no postman pelo caminho abaixo:
 postman/mobiauto-backend.postman_collection.json
 ```
 
