@@ -1,7 +1,19 @@
 # mobiauto-backend
 ### Build
+Para buildar a aplicação, execute:
 ```bash
-mvn clean install
+./mvnw clean install
+```
+### Run
+Para rodar execute o comando abaixo:
+```bash
+./mvnw spring-boot:run
+```
+
+### Unit Tests
+Para rodar os testes unitários:
+```bash
+./mvnw clean test surefire-report:report-only
 ```
 
 ### Para realizar testes locais:
