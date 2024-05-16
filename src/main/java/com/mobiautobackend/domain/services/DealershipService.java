@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -67,7 +66,7 @@ public class DealershipService {
                 if (Objects.equals(authenticatedMember.getId(), searchedMember.getId())) {
                     return authenticatedMember.isOwner() || authenticatedMember.isManager() || authenticatedMember.isAssistant();
                 } else {
-                    return authenticatedMember.isOwner() || authenticatedMember.isManager();
+                    return false;
                 }
             }
             return false;
