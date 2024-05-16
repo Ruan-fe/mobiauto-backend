@@ -1,16 +1,14 @@
 # mobiauto-backend
 
-### Endpoints
-
-
+### Usuário admin para testar a aplicação:
 ```bash
-Usuário admin para testar a aplicação:
-
 {
   "email": "admin@mobiautobackend.com",
   "password": "admin"
 }
 ```
+### Endpoints
+
 ### Autenticação:
 ```bash
 Endpoint para autenticação:
@@ -32,7 +30,7 @@ Response Body:
 ```
 ### Members (Usuários):
 ```bash
-Endpoint para criação de membros (usuarios):
+Endpoint para criação de membros:
 
 POST http://localhost:8080/api/members
 
@@ -52,7 +50,7 @@ Response Headers =
 Location: http://localhost:8080/api/members/2e46d4b9-ab1c-48c8-aa31-fd39a4651653
 ```
 ```bash
-Endpoint para busca de membro (usuario) por id:
+Endpoint para busca de membros por id:
 
 GET http://localhost:8080/api/members{memberId}
 
@@ -77,7 +75,7 @@ Response Body=
 ```
 ### Dealerships (Revendas):
 ```bash
-Endpoint para criação de dealerships (revendas):
+Endpoint para criação de concessionárias:
 
 POST http://localhost:8080/api/dealerships
 
@@ -97,7 +95,7 @@ Response Headers =
 Location: http://localhost:8080/api/dealerships/bee19490-a913-4231-8f42-5e61a6ccfc18
 ```
 ```bash
-Endpoint para busca por id de dealerships (revendas):
+Endpoint para busca por id de concessionárias:
 
 GET http://localhost:8080/api/dealerships/bee19490-a913-4231-8f42-5e61a6ccfc18
 
@@ -474,7 +472,7 @@ Response Body=
 }
 ```
 ```bash
-Endpoint para criação de atribuição de oportunidades:
+Endpoint para atribuição de oportunidades:
 
 POST http://localhost:8080/api/opportunities/249fb6e3-d52f-4c90-bda5-19b392e8cce2/assign
 
