@@ -93,6 +93,10 @@ public class OpportunityService {
                 .stream()
                 .collect(Collectors.groupingBy(Opportunity::getMemberId, Collectors.counting()));
 
+        if (opportunitiesInProgressByMembersId.isEmpty()) {
+            return assistantMembers.getFirst();
+        }
+
         String memberIdWithLessOpportuniesAssign = opportunitiesInProgressByMembersId.entrySet().stream()
                 .min(Comparator.comparingLong((Map.Entry<String, Long> entry) -> entry.getValue())
                         .thenComparingLong(entry -> this.getLastAssignOpportunityDate(entry.getKey()).toEpochSecond()))
