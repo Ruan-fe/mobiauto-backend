@@ -18,4 +18,7 @@ public interface OpportunityRepository extends JpaRepository<Opportunity, String
 
     Page<Opportunity> findByDealershipId(String dealershipId, Pageable pageable);
 
+    List<Opportunity> findByDealershipIdAndStatusAndMemberIdIn(String dealershipId, OpportunityStatus status, List<String> memberIds);
+
+    Optional<Opportunity> findTopByMemberIdOrderByAssignDateDesc(String memberId);
 }

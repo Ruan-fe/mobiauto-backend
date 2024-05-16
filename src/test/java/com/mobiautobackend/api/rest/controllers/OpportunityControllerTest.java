@@ -188,4 +188,35 @@ public class OpportunityControllerTest extends ApplicationTests<OpportunityContr
                 .andExpect(jsonPath("$.creationDate").exists())
                 .andExpect(jsonPath("$._links['self'].href").value(containsString(uriSelf)));
     }
+
+    @Test
+    public void shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic() throws Exception {
+        final String uri = fromPath(OPPORTUNITY_RESOURCE_PATH).toUriString();
+
+        String content = super.getScenarioBody("shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic");
+
+        MvcResult result = mockMvc.perform(post(uri)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().string(LOCATION, containsString(uri)))
+                .andReturn();
+
+        mockMvc.perform(get(result.getResponse().getHeader(LOCATION)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.dealershipId").value("2721d31f-a83d-4f6d-b1ac-f8fd74ca19c2"))
+                .andExpect(jsonPath("$.vehicleId").value("bcc1ca1d-7b4c-497f-9a3f-ec7b5a749deb"))
+                .andExpect(jsonPath("$.memberId").value("f94c4e97-1933-46c7-b08d-a7f40830a69a"))
+                .andExpect(jsonPath("$.customer").exists())
+                .andExpect(jsonPath("$.customer.name").value("Palin Sena"))
+                .andExpect(jsonPath("$.customer.email").value("palinsena@gmail.com"))
+                .andExpect(jsonPath("$.customer.phone").value("18997845420"))
+                .andExpect(jsonPath("$.status").value(OpportunityStatus.IN_PROGRESS.name()))
+                .andExpect(jsonPath("$.assignDate").exists())
+                .andExpect(jsonPath("$.conclusionDate").doesNotExist())
+                .andExpect(jsonPath("$.creationDate").exists())
+                .andExpect(jsonPath("$._links['self'].href").value(containsString(uri)));
+    }
 }
