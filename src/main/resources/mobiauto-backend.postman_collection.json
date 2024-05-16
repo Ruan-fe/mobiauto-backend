@@ -1,0 +1,504 @@
+{
+	"info": {
+		"_postman_id": "f73c01bf-a032-4db2-8734-a825ddc5d8f4",
+		"name": "mobiauto-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12015067"
+	},
+	"item": [
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "admin authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@mobiautobackend.com\",\r\n  \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authenticate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"Colt@gmail.com\",\r\n  \"password\": \"testeAbobora\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "members",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.variables.replaceIn('{{$randomFirstName}}');\r",
+									"pm.globals.set(\"name\", name);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiYWRtaW5AbW9iaWF1dG9iYWNrZW5kLmNvbSIsImV4cCI6MTcxNTgxMDk3NH0.i5fUpNMdhcP9l6u-5IjBfx5Rb-iBgt89fAPqJnl7fq4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{name}}\",\r\n  \"email\": \"{{name}}@gmail.com\",\r\n  \"password\": \"testeAbobora\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/members",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiR2FicmllbGxlQGdtYWlsLmNvbSIsImV4cCI6MTcxNTgxMTk0NX0.4KmyQ588wTMXnSVxM-CzNi39CRHjgLMz8S0d9_nHyLI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/members/b5328552-5d47-425d-ab21-ed1de6f460a9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"members",
+								"b5328552-5d47-425d-ab21-ed1de6f460a9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "dealerships",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiRW5vY2hAZ21haWwuY29tIiwiZXhwIjoxNzE1ODEzMDk3fQ.vfYce2NF81ARZjLdWfHjjXWqk6AmQdscjv8OOUJUHh0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tradeName\": \"ENOCHI VEICULOS\",\r\n  \"cnpj\": \"95491577000150\",\r\n  \"memberId\": \"b371ae4f-76ff-4c9e-86ed-d545b957fe4b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/dealerships",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dealerships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/dealerships/f09f598a-2354-4117-9a37-494a289ec933",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dealerships",
+								"f09f598a-2354-4117-9a37-494a289ec933"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RegisterMember",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiVGF5bG9yQGdtYWlsLmNvbSIsImV4cCI6MTcxNTgyNjMyMX0.Vboih9uFAX5ouf_AI0_A8XvEvKQ-SJ8NZmVkpZigzkw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"memberId\": \"200f7229-101b-4ba4-bf91-8598cab82180\",\r\n  \"role\": \"ASSISTANT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/dealerships/bee19490-a913-4231-8f42-5e61a6ccfc18/registerMember",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"dealerships",
+								"bee19490-a913-4231-8f42-5e61a6ccfc18",
+								"registerMember"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vehicles",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiVmVybmllQGdtYWlsLmNvbSIsImV4cCI6MTcxNTgxOTY2NH0.MiuyYirGDZmcDAT7FDi9ykYdQZJLrZ_oUFXoRZXUWhY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"licensePlate\": \"ABC-147\",\r\n  \"brandType\": \"ACURA\",\r\n  \"model\": \"Acura 1s2\",\r\n  \"manufacturingYear\": 2024,\r\n  \"modelYear\": 2024,\r\n  \"version\": \"GVT\",\r\n  \"transmissionType\": \"MANUAL\",\r\n  \"fuelType\": \"GASOLINE\",\r\n  \"doors\": 4,\r\n  \"color\": \"YELLOW\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/vehicles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"vehicles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/vehicles/09282371-2f35-4e17-9ce6-3547f1ac56bc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"vehicles",
+								"09282371-2f35-4e17-9ce6-3547f1ac56bc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/vehicles?dealershipId=33e7c864-5197-42f4-98d1-ab81cdf0349e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"vehicles"
+							],
+							"query": [
+								{
+									"key": "dealershipId",
+									"value": "33e7c864-5197-42f4-98d1-ab81cdf0349e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "opportunities",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"vehicleId\": \"9ddf07b3-4227-4203-8aaf-5acc4f42d54d\",\r\n  \"customer\": {\r\n    \"name\": \"Tiago Barbosa\",\r\n    \"email\": \"tiagobarbosa@gmail.com\",\r\n    \"phone\": \"1547856354\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/opportunities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"opportunities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiQ29sdEBnbWFpbC5jb20iLCJleHAiOjE3MTU4MjcyMTh9.v8dSBCTN6dUXGrPANjYSR5FUQTsmyisjh9BEGt7CrO4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"memberId\": \"b3e54d7e-a1e6-462c-ada7-9b1e0c846cc0\",\r\n  \"reason\": \"Finalizado\",\r\n  \"status\": \"IN_PROGRESS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/opportunities/249fb6e3-d52f-4c90-bda5-19b392e8cce2/assign",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"opportunities",
+								"249fb6e3-d52f-4c90-bda5-19b392e8cce2",
+								"assign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiUmlja2V5QGdtYWlsLmNvbSIsImV4cCI6MTcxNTgxNzE2OX0.EqnR4tT9T6z4TrN0vj-eWiYkFjkL1SWNDPKDEONDXyc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/opportunities/05371121-d0cc-4719-a749-b1795d409f06",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"opportunities",
+								"05371121-d0cc-4719-a749-b1795d409f06"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtb2JpYXV0by1iYWNrZW5kIiwic3ViIjoiUmlja2V5QGdtYWlsLmNvbSIsImV4cCI6MTcxNTgxNzE2OX0.EqnR4tT9T6z4TrN0vj-eWiYkFjkL1SWNDPKDEONDXyc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/opportunities?dealershipId=asdasdasdasd&statuses=NEW",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"opportunities"
+							],
+							"query": [
+								{
+									"key": "dealershipId",
+									"value": "asdasdasdasd"
+								},
+								{
+									"key": "statuses",
+									"value": "NEW"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,4 +1,23 @@
 # mobiauto-backend
+### Build
+```bash
+mvn clean install
+```
+
+### Para realizar testes locais:
+```bash
+Via Postman:
+É necessário efetuar o download da coleção e importar no postman. 
+
+Pelo caminho:
+src/main/resources/mobiauto-backend.postman_collection.json
+
+OU
+
+Pelo link:
+https://api.postman.com/collections/12015067-f73c01bf-a032-4db2-8734-a825ddc5d8f4?access_key=PMAT-01HXZPATZFCW8QY4KH1VE4PYZ3 
+```
+
 
 ### Usuário admin para testar a aplicação:
 ```bash
@@ -7,7 +26,7 @@
   "password": "admin"
 }
 ```
-### Endpoints
+### ENDPOINTS
 
 ### Autenticação:
 ```bash
