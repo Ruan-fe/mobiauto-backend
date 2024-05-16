@@ -84,19 +84,28 @@ public class OpportunityService {
     public String getAssistantIdToAssign(Opportunity opportunity) {
         Dealership dealership = dealershipService.findById(opportunity.getDealershipId()).get();
         List<String> assistantMembers = dealership.getMembers().stream().filter(Member::isAssistant).map(Member::getId).toList();
-        if (assistantMembers.isEmpty()) {
-            return null;
-        }
 
         Map<String, Long> opportunitiesInProgressByMembersId = opportunityRepository.findByDealershipIdAndStatusAndMemberIdIn(
                         opportunity.getDealershipId(), OpportunityStatus.IN_PROGRESS, assistantMembers)
                 .stream()
                 .collect(Collectors.groupingBy(Opportunity::getMemberId, Collectors.counting()));
 
+        //No assistant with opportunities in progress
         if (opportunitiesInProgressByMembersId.isEmpty()) {
-            return assistantMembers.getFirst();
+            return assistantMembers.isEmpty() ? null : assistantMembers.getFirst();
         }
 
+        //Some assistant with no opportunities in progress
+        String memberIdWithNoOpportunitiesInProgress = assistantMembers.stream()
+                .filter(memberId -> !opportunitiesInProgressByMembersId.containsKey(memberId))
+                .findFirst()
+                .orElse(null);
+
+        if (memberIdWithNoOpportunitiesInProgress != null) {
+            return memberIdWithNoOpportunitiesInProgress;
+        }
+
+        //Both assistants with the same number of opportunities in progress should get by older assign date
         String memberIdWithLessOpportuniesAssign = opportunitiesInProgressByMembersId.entrySet().stream()
                 .min(Comparator.comparingLong((Map.Entry<String, Long> entry) -> entry.getValue())
                         .thenComparingLong(entry -> this.getLastAssignOpportunityDate(entry.getKey()).toEpochSecond()))

@@ -193,7 +193,9 @@ public class OpportunityControllerTest extends ApplicationTests<OpportunityContr
     public void shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic() throws Exception {
         final String uri = fromPath(OPPORTUNITY_RESOURCE_PATH).toUriString();
 
-        String content = super.getScenarioBody("shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic");
+        //Both assistants with the same number of opportunities in progress
+        String content = super.getScenarioBody("shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic")
+                .replace("{vehicleId}", "bcc1ca1d-7b4c-497f-9a3f-ec7b5a749deb");
 
         MvcResult result = mockMvc.perform(post(uri)
                         .content(content)
@@ -209,6 +211,62 @@ public class OpportunityControllerTest extends ApplicationTests<OpportunityContr
                 .andExpect(jsonPath("$.dealershipId").value("2721d31f-a83d-4f6d-b1ac-f8fd74ca19c2"))
                 .andExpect(jsonPath("$.vehicleId").value("bcc1ca1d-7b4c-497f-9a3f-ec7b5a749deb"))
                 .andExpect(jsonPath("$.memberId").value("f94c4e97-1933-46c7-b08d-a7f40830a69a"))
+                .andExpect(jsonPath("$.customer").exists())
+                .andExpect(jsonPath("$.customer.name").value("Palin Sena"))
+                .andExpect(jsonPath("$.customer.email").value("palinsena@gmail.com"))
+                .andExpect(jsonPath("$.customer.phone").value("18997845420"))
+                .andExpect(jsonPath("$.status").value(OpportunityStatus.IN_PROGRESS.name()))
+                .andExpect(jsonPath("$.assignDate").exists())
+                .andExpect(jsonPath("$.conclusionDate").doesNotExist())
+                .andExpect(jsonPath("$.creationDate").exists())
+                .andExpect(jsonPath("$._links['self'].href").value(containsString(uri)));
+
+        //Some assistant with no opportunities in progress
+        content = super.getScenarioBody("shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic")
+                .replace("{vehicleId}", "f4508e32-4e40-4c2c-ac7a-3cd28ebb6762");
+
+        result = mockMvc.perform(post(uri)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().string(LOCATION, containsString(uri)))
+                .andReturn();
+
+        mockMvc.perform(get(result.getResponse().getHeader(LOCATION)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.dealershipId").value("a66a9197-faf7-4eeb-a64f-706a5566ad5e"))
+                .andExpect(jsonPath("$.vehicleId").value("f4508e32-4e40-4c2c-ac7a-3cd28ebb6762"))
+                .andExpect(jsonPath("$.memberId").value("8a143c6f-c406-4d81-a413-f7b47a0bee06"))
+                .andExpect(jsonPath("$.customer").exists())
+                .andExpect(jsonPath("$.customer.name").value("Palin Sena"))
+                .andExpect(jsonPath("$.customer.email").value("palinsena@gmail.com"))
+                .andExpect(jsonPath("$.customer.phone").value("18997845420"))
+                .andExpect(jsonPath("$.status").value(OpportunityStatus.IN_PROGRESS.name()))
+                .andExpect(jsonPath("$.assignDate").exists())
+                .andExpect(jsonPath("$.conclusionDate").doesNotExist())
+                .andExpect(jsonPath("$.creationDate").exists())
+                .andExpect(jsonPath("$._links['self'].href").value(containsString(uri)));
+
+        //No assistant with opportunities in progress
+        content = super.getScenarioBody("shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic")
+                .replace("{vehicleId}", "4be2aebe-e2a2-4833-ab85-d29fd6c77835");
+
+        result = mockMvc.perform(post(uri)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().string(LOCATION, containsString(uri)))
+                .andReturn();
+
+        mockMvc.perform(get(result.getResponse().getHeader(LOCATION)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.dealershipId").value("b1fc5b09-75ea-46dd-9290-9c1760686c3a"))
+                .andExpect(jsonPath("$.vehicleId").value("4be2aebe-e2a2-4833-ab85-d29fd6c77835"))
+                .andExpect(jsonPath("$.memberId").exists())
                 .andExpect(jsonPath("$.customer").exists())
                 .andExpect(jsonPath("$.customer.name").value("Palin Sena"))
                 .andExpect(jsonPath("$.customer.email").value("palinsena@gmail.com"))

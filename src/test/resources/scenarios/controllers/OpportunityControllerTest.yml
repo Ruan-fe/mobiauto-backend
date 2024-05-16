@@ -25,7 +25,7 @@ shouldReturnCreatedWhenAssignAnOpportunityWithApprovedStatus:
 shouldReturnCreatedWhenPostOpportunityAndAssignAutomatic:
   body: >-
     {
-      "vehicleId": "bcc1ca1d-7b4c-497f-9a3f-ec7b5a749deb",
+      "vehicleId": "{vehicleId}",
       "customer": {
         "name": "Palin Sena",
         "email": "palinsena@gmail.com",
