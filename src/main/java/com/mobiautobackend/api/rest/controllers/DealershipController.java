@@ -80,6 +80,6 @@ public class DealershipController {
 
         dealership = dealershipService.registerMember(memberToRegister, dealership, registerMemberRequestModel.getRole());
 
-        return ResponseEntity.created(dealershipAssembler.buildDealershipSelfLink(dealership.getId()).toUri()).build();
+        return ResponseEntity.ok().location(dealershipAssembler.buildDealershipSelfLink(dealership.getId()).toUri()).build();
     }
 }

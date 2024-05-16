@@ -1,5 +1,6 @@
 package com.mobiautobackend.domain.services;
 
+import com.mobiautobackend.api.rest.models.request.OpportunityAssignRequestModel;
 import com.mobiautobackend.domain.entities.Customer;
 import com.mobiautobackend.domain.entities.Opportunity;
 import com.mobiautobackend.domain.enumeration.OpportunityStatus;
@@ -55,13 +56,18 @@ public class OpportunityService {
     }
 
     @Transactional
-    public Opportunity assign(Opportunity opportunity) {
+    public Opportunity assign(Opportunity opportunity, OpportunityAssignRequestModel assignRequestModel) {
+        opportunity.setStatus(assignRequestModel.getStatus());
+        opportunity.setMemberId(assignRequestModel.getMemberId());
+        opportunity.setReason(assignRequestModel.getReason());
+
         if (Objects.equals(opportunity.getStatus(), OpportunityStatus.IN_PROGRESS)) {
             opportunity.setAssignDate(ZonedDateTime.now());
         } else if (Objects.equals(opportunity.getStatus(), OpportunityStatus.APPROVED) ||
                 Objects.equals(opportunity.getStatus(), OpportunityStatus.REPROVED)) {
             opportunity.setConclusionDate(ZonedDateTime.now());
         }
+
         return opportunityRepository.save(opportunity);
     }
 }

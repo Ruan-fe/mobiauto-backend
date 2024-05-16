@@ -118,19 +118,35 @@ public class OpportunityControllerTest extends ApplicationTests<OpportunityContr
     }
 
     @Test
-    public void shouldReturnCreatedWhenAssignAnOpportunity() throws Exception {
+    public void shouldReturnOkWhenAssignAnOpportunity() throws Exception {
         final String uri = fromPath(OPPORTUNITY_ASSIGN_PATH).buildAndExpand("3ba22468-db41-470c-adde-727aa66327d6").toUriString();
         final String uriSelf = fromPath(OPPORTUNITY_SELF_PATH).buildAndExpand("3ba22468-db41-470c-adde-727aa66327d6").toUriString();
         String content = super.getScenarioBody("shouldReturnCreatedWhenAssignAnOpportunityWithInProgressStatus");
 
-        MvcResult result = mockMvc.perform(post(uri)
+        mockMvc.perform(get(uriSelf))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.dealershipId").value("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1"))
+                .andExpect(jsonPath("$.vehicleId").value("2e55b038-b7af-41b7-b1f8-3c5023f237ac"))
+                .andExpect(jsonPath("$.memberId").doesNotExist())
+                .andExpect(jsonPath("$.customer").exists())
+                .andExpect(jsonPath("$.customer.name").value("Martin Costa"))
+                .andExpect(jsonPath("$.customer.email").value("martincosta@gmail.com"))
+                .andExpect(jsonPath("$.customer.phone").value("18997845415"))
+                .andExpect(jsonPath("$.status").value(OpportunityStatus.NEW.name()))
+                .andExpect(jsonPath("$.assignDate").doesNotExist())
+                .andExpect(jsonPath("$.conclusionDate").doesNotExist())
+                .andExpect(jsonPath("$.creationDate").exists())
+                .andExpect(jsonPath("$._links['self'].href").value(containsString(uriSelf)));
+
+         mockMvc.perform(post(uri)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(header().string(LOCATION, containsString(uriSelf)))
-                .andReturn();
+                .andExpect(status().isOk())
+                .andExpect(header().string(LOCATION, containsString(uriSelf)));
 
-        mockMvc.perform(get(result.getResponse().getHeader(LOCATION)))
+        mockMvc.perform(get(uriSelf))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -149,14 +165,13 @@ public class OpportunityControllerTest extends ApplicationTests<OpportunityContr
 
         content = super.getScenarioBody("shouldReturnCreatedWhenAssignAnOpportunityWithApprovedStatus");
 
-        result = mockMvc.perform(post(uri)
+        mockMvc.perform(post(uri)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(header().string(LOCATION, containsString(uriSelf)))
-                .andReturn();
+                .andExpect(status().isOk())
+                .andExpect(header().string(LOCATION, containsString(uriSelf)));
 
-        mockMvc.perform(get(result.getResponse().getHeader(LOCATION)))
+        mockMvc.perform(get(uriSelf))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())

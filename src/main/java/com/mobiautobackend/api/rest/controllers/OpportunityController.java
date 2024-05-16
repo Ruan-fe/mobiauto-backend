@@ -108,10 +108,8 @@ public class OpportunityController {
             throw new ForbiddenException(NOT_AUTHORIZED);
         }
 
-        opportunity = opportunityAssembler.toEntity(assignRequestModel, opportunity);
+        opportunity = opportunityService.assign(opportunity, assignRequestModel);
 
-        opportunity = opportunityService.assign(opportunity);
-
-        return ResponseEntity.created(opportunityAssembler.buildOpportunitySelfLink(opportunity).toUri()).build();
+        return ResponseEntity.ok().location(opportunityAssembler.buildOpportunitySelfLink(opportunity).toUri()).build();
     }
 }

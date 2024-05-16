@@ -17,11 +17,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.mobiautobackend.api.rest.controllers.AuthenticationController.AUTHENTICATION_RESOURCE_PATH;
-import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_RESOURCE_PATH;
-import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
-import static com.mobiautobackend.api.rest.controllers.MemberController.*;
+import static com.mobiautobackend.api.rest.controllers.DealershipController.*;
+import static com.mobiautobackend.api.rest.controllers.MemberController.MEMBER_RESOURCE_PATH;
+import static com.mobiautobackend.api.rest.controllers.MemberController.MEMBER_SELF_PATH;
 import static com.mobiautobackend.api.rest.controllers.OpportunityController.*;
-import static com.mobiautobackend.api.rest.controllers.VehicleController.*;
+import static com.mobiautobackend.api.rest.controllers.VehicleController.VEHICLE_RESOURCE_PATH;
+import static com.mobiautobackend.api.rest.controllers.VehicleController.VEHICLE_SELF_PATH;
 
 @Configuration
 @EnableWebSecurity
@@ -44,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, MEMBER_RESOURCE_PATH).hasRole(MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, MEMBER_SELF_PATH).authenticated()
                         .requestMatchers(HttpMethod.POST, DEALERSHIP_RESOURCE_PATH).hasAnyRole(MemberRole.USER.name(), MemberRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, DEALERSHIP_REGISTER_MEMBER_PATH).hasAnyRole(MemberRole.OWNER.name(), MemberRole.MANAGER.name(), MemberRole.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, DEALERSHIP_SELF_PATH).permitAll()
                         .requestMatchers(HttpMethod.POST, OPPORTUNITY_RESOURCE_PATH).permitAll()
                         .requestMatchers(HttpMethod.POST, OPPORTUNITY_ASSIGN_PATH).hasAnyRole(MemberRole.ASSISTANT.name(), MemberRole.MANAGER.name(), MemberRole.OWNER.name(), MemberRole.ADMIN.name())

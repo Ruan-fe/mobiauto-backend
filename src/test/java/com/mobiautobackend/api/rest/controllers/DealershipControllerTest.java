@@ -153,7 +153,7 @@ public class DealershipControllerTest extends ApplicationTests<DealershipControl
     }
 
     @Test
-    public void shouldReturnCreatedWhenRegisterMemberInDealership() throws Exception {
+    public void shouldReturnOkWhenRegisterMemberInDealership() throws Exception {
         final String uri = fromPath(DEALERSHIP_REGISTER_MEMBER_PATH).buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString();
         final String uriGet = fromPath(DEALERSHIP_SELF_PATH).buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString();
 
@@ -176,7 +176,7 @@ public class DealershipControllerTest extends ApplicationTests<DealershipControl
         mockMvc.perform(post(uri)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)).andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(header().string(LOCATION, containsString(uriGet)));
 
         mockMvc.perform(get(uriGet))
