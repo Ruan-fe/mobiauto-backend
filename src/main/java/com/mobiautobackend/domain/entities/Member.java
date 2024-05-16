@@ -63,6 +63,10 @@ public class Member implements UserDetails {
         return Objects.equals(this.role, MemberRole.ASSISTANT);
     }
 
+    public boolean isUser() {
+        return Objects.equals(this.role, MemberRole.USER);
+    }
+
     public void setId(String id) {
         this.id = id;
     }

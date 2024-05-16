@@ -1,9 +1,11 @@
 package com.mobiautobackend.api.rest.controllers;
 
 import com.mobiautobackend.api.rest.assemblers.DealershipAssembler;
+import com.mobiautobackend.api.rest.models.request.DealershipRegisterMemberRequestModel;
 import com.mobiautobackend.api.rest.models.request.DealershipRequestModel;
 import com.mobiautobackend.api.rest.models.response.DealershipResponseModel;
 import com.mobiautobackend.domain.entities.Dealership;
+import com.mobiautobackend.domain.entities.Member;
 import com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum;
 import com.mobiautobackend.domain.exceptions.BadRequestException;
 import com.mobiautobackend.domain.exceptions.ConflictException;
@@ -20,9 +22,9 @@ import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.NOT_A
 
 @RestController
 public class DealershipController {
-
     public static final String DEALERSHIP_RESOURCE_PATH = "/api/dealerships";
     public static final String DEALERSHIP_SELF_PATH = DEALERSHIP_RESOURCE_PATH + "/{dealershipId}";
+    public static final String DEALERSHIP_REGISTER_MEMBER_PATH = DEALERSHIP_SELF_PATH + "/registerMember";
 
     private final DealershipService dealershipService;
     private final DealershipAssembler dealershipAssembler;
@@ -62,5 +64,22 @@ public class DealershipController {
         Dealership dealership = dealershipService.findById(dealershipId).orElseThrow(() ->
                 new NotFoundException(ExceptionMessagesEnum.DEALERSHIP_NOT_FOUND));
         return ResponseEntity.ok().body(dealershipAssembler.toModel(dealership));
+    }
+
+    @PostMapping(DEALERSHIP_REGISTER_MEMBER_PATH)
+    public ResponseEntity<?> registerMember(@PathVariable("dealershipId") final String dealershipId,
+                                            @RequestBody @Valid DealershipRegisterMemberRequestModel registerMemberRequestModel) {
+        Dealership dealership = dealershipService.findById(dealershipId).orElseThrow(() ->
+                new BadRequestException(ExceptionMessagesEnum.DEALERSHIP_NOT_FOUND));
+
+        if (!dealershipService.isAnAuthorizedMember(dealership.getId())) {
+            throw new ForbiddenException(NOT_AUTHORIZED);
+        }
+        Member memberToRegister = memberService.findById(registerMemberRequestModel.getMemberId())
+                .orElseThrow(() -> new BadRequestException(ExceptionMessagesEnum.MEMBER_NOT_FOUND));
+
+        dealership = dealershipService.registerMember(memberToRegister, dealership, registerMemberRequestModel.getRole());
+
+        return ResponseEntity.created(dealershipAssembler.buildDealershipSelfLink(dealership.getId()).toUri()).build();
     }
 }

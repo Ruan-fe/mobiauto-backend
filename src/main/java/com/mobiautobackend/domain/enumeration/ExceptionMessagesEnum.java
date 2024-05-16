@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 
 public enum ExceptionMessagesEnum {
 
+    //400
+    MEMBER_ALREADY_HAS_DEALERSHIP(400001, "Member already has a dealership", HttpStatus.BAD_REQUEST),
+
     //404
     MEMBER_NOT_FOUND(404001, "Member not found for Id informed", HttpStatus.NOT_FOUND),
     DEALERSHIP_NOT_FOUND(404002, "Dealership not found for Id informed", HttpStatus.NOT_FOUND),

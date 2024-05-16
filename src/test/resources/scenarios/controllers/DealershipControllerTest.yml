@@ -37,3 +37,9 @@ shouldReturnBadRequestWhenPostDealershipWithNullMemberId:
       "tradeName":"Arigato Veiculos",
       "cnpj":"20994146000107"
     }
+shouldReturnCreatedWhenRegisterMemberInDealership:
+  body: >-
+    {
+      "memberId":"411e816f-a2b3-4cc2-a622-ef71a49706da",
+      "role":"ASSISTANT"
+    }

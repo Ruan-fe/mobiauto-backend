@@ -14,8 +14,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.MEMBER_ALREADY_HAS_DEALERSHIP;
 
 @Service
 public class DealershipService {
@@ -70,5 +73,16 @@ public class DealershipService {
             return false;
         }
         return true;
+    }
+
+    @Transactional
+    public Dealership registerMember(Member memberToRegister, Dealership dealership, MemberRole memberRole) {
+        if (memberToRegister.isUser()) {
+            dealership.getMembers().add(memberToRegister);
+            dealership.setMembers(dealership.getMembers());
+            memberService.updateMemberRole(memberToRegister.getId(), memberRole);
+            return dealershipRepository.save(dealership);
+        }
+        throw new BadRequestException(MEMBER_ALREADY_HAS_DEALERSHIP);
     }
 }

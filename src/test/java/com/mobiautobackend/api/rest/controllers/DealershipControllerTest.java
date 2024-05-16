@@ -1,12 +1,12 @@
 package com.mobiautobackend.api.rest.controllers;
 
 import com.mobiautobackend.ApplicationTests;
+import com.mobiautobackend.domain.enumeration.MemberRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_RESOURCE_PATH;
-import static com.mobiautobackend.api.rest.controllers.DealershipController.DEALERSHIP_SELF_PATH;
+import static com.mobiautobackend.api.rest.controllers.DealershipController.*;
 import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.DEALERSHIP_NOT_FOUND;
 import static com.mobiautobackend.domain.enumeration.ExceptionMessagesEnum.MEMBER_NOT_FOUND;
 import static org.hamcrest.core.StringContains.containsString;
@@ -150,5 +150,50 @@ public class DealershipControllerTest extends ApplicationTests<DealershipControl
                 .andExpect(jsonPath("$.errors.messages[0].code").value(BAD_REQUEST.value()))
                 .andExpect(jsonPath("$.errors.messages[0].message").value("memberId must not be blank"))
                 .andExpect(jsonPath("$._links['self'].href").value(containsString(uri)));
+    }
+
+    @Test
+    public void shouldReturnCreatedWhenRegisterMemberInDealership() throws Exception {
+        final String uri = fromPath(DEALERSHIP_REGISTER_MEMBER_PATH).buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString();
+        final String uriGet = fromPath(DEALERSHIP_SELF_PATH).buildAndExpand("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1").toUriString();
+
+        mockMvc.perform(get(uriGet))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1"))
+                .andExpect(jsonPath("$.tradeName").value("Ruanzinho Veiculos"))
+                .andExpect(jsonPath("$.cnpj").value("45572678000187"))
+                .andExpect(jsonPath("$.members[0].id").value("a5993416-4255-11ec-71d3-0242ac130004"))
+                .andExpect(jsonPath("$.members[0].name").value("Ruan Amaral"))
+                .andExpect(jsonPath("$.members[0].email").value("ruan@gmail.com"))
+                .andExpect(jsonPath("$.members[0].role").value(MemberRole.OWNER.name()))
+                .andExpect(jsonPath("$.members[1].id").doesNotExist())
+                .andExpect(jsonPath("$.creationDate").value("2024-04-23T23:01:40.619-03:00"))
+                .andExpect(jsonPath("$._links['self'].href").value(containsString(uriGet)));
+
+        String content = super.getScenarioBody("shouldReturnCreatedWhenRegisterMemberInDealership");
+
+        mockMvc.perform(post(uri)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().string(LOCATION, containsString(uriGet)));
+
+        mockMvc.perform(get(uriGet))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("246e30ed-6f82-4da7-bb09-c9f7ca9bf4e1"))
+                .andExpect(jsonPath("$.tradeName").value("Ruanzinho Veiculos"))
+                .andExpect(jsonPath("$.cnpj").value("45572678000187"))
+                .andExpect(jsonPath("$.members[0].id").value("411e816f-a2b3-4cc2-a622-ef71a49706da"))
+                .andExpect(jsonPath("$.members[0].name").value("Guilherme Matias"))
+                .andExpect(jsonPath("$.members[0].email").value("guilhermematias@gmail.com"))
+                .andExpect(jsonPath("$.members[0].role").value(MemberRole.ASSISTANT.name()))
+                .andExpect(jsonPath("$.members[1].id").value("a5993416-4255-11ec-71d3-0242ac130004"))
+                .andExpect(jsonPath("$.members[1].name").value("Ruan Amaral"))
+                .andExpect(jsonPath("$.members[1].email").value("ruan@gmail.com"))
+                .andExpect(jsonPath("$.members[1].role").value(MemberRole.OWNER.name()))
+                .andExpect(jsonPath("$.creationDate").value("2024-04-23T23:01:40.619-03:00"))
+                .andExpect(jsonPath("$._links['self'].href").value(containsString(uriGet)));
     }
 }
